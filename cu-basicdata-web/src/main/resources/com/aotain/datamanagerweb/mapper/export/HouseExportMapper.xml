@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aotain.datamanagerweb.mapper.export.HouseExportMapper">
+
+    <resultMap id="houseInformationMap" type="com.aotain.datamanagerweb.model.dataexport.house.ExportHouseInformation">
+        <result column="houseId" jdbcType="DECIMAL" property="houseId" />
+        <result column="houseIdStr" jdbcType="VARCHAR" property="houseIdStr" />
+        <result column="houseName" jdbcType="VARCHAR" property="houseName" />
+        <result column="identify" jdbcType="DECIMAL" property="identifyStr" />
+        <result column="houseType" jdbcType="DECIMAL" property="houseTypeStr" />
+        <result column="houseAddress" jdbcType="VARCHAR" property="houseAddress" />
+        <result column="houseZipCode" jdbcType="VARCHAR" property="houseZipCode" />
+        <result column="houseOfficerName" jdbcType="VARCHAR" property="houseOfficerName" />
+        <result column="houseOfficerIdType" jdbcType="DECIMAL" property="houseOfficerIdType" />
+        <result column="houseOfficerId" jdbcType="VARCHAR" property="houseOfficerId" />
+        <result column="houseOfficerTelephone" jdbcType="VARCHAR" property="houseOfficerTelephone" />
+        <result column="houseOfficerMobile" jdbcType="VARCHAR" property="houseOfficerMobile" />
+        <result column="houseOfficerEmail" jdbcType="VARCHAR" property="houseOfficerEmail" />
+        <result column="areaCode" jdbcType="VARCHAR" property="areaCode"/>
+        <collection property="ipSegList" column="HOUSEID" select="getIpSegList"></collection>
+        <collection property="frameList" column="HOUSEID" select="getFrameList"></collection>
+        <collection property="gatewayInfoList" column="HOUSEID" select="getGatewayList"></collection>
+
+    </resultMap>
+
+    <resultMap id="rptHouseInformationMap" type="com.aotain.datamanagerweb.model.dataexport.house.ExportHouseInformation">
+        <result column="houseId" jdbcType="DECIMAL" property="houseId" />
+        <result column="houseIdStr" jdbcType="VARCHAR" property="houseIdStr" />
+        <result column="houseName" jdbcType="VARCHAR" property="houseName" />
+        <result column="identify" jdbcType="DECIMAL" property="identifyStr" />
+        <result column="houseType" jdbcType="DECIMAL" property="houseTypeStr" />
+        <result column="houseAddress" jdbcType="VARCHAR" property="houseAddress" />
+        <result column="houseZipCode" jdbcType="VARCHAR" property="houseZipCode" />
+        <result column="houseOfficerName" jdbcType="VARCHAR" property="houseOfficerName" />
+        <result column="houseOfficerIdType" jdbcType="DECIMAL" property="houseOfficerIdType" />
+        <result column="houseOfficerId" jdbcType="VARCHAR" property="houseOfficerId" />
+        <result column="houseOfficerTelephone" jdbcType="VARCHAR" property="houseOfficerTelephone" />
+        <result column="houseOfficerMobile" jdbcType="VARCHAR" property="houseOfficerMobile" />
+        <result column="houseOfficerEmail" jdbcType="VARCHAR" property="houseOfficerEmail" />
+        <result column="areaCode" jdbcType="VARCHAR" property="areaCode"/>
+        <collection property="ipSegList" column="HOUSEID" select="getRptIpSegList"></collection>
+        <collection property="frameList" column="HOUSEID" select="getRptFrameList"></collection>
+        <collection property="gatewayInfoList" column="HOUSEID" select="getRptGatewayList"></collection>
+
+    </resultMap>
+
+    <sql id="joinSql">
+        b.HOUSENAME
+    </sql>
+
+    <!-- ip地址段嵌套查询 -->
+    <resultMap id="baseIpSegMap" type="com.aotain.datamanagerweb.model.dataexport.house.ExportIpSegmentInformation">
+        <id column="IPSEGID" jdbcType="DECIMAL" property="ipSegId" />
+        <result column="HOUSENAME" jdbcType="VARCHAR" property="houseName"/>
+        <result column="STARTIP" jdbcType="VARCHAR" property="startIP" />
+        <result column="ENDIP" jdbcType="VARCHAR" property="endIP" />
+        <result column="IPTYPE" jdbcType="DECIMAL" property="ipType" />
+        <result column="USERNAME" jdbcType="VARCHAR" property="userName" />
+        <result column="USETIME" jdbcType="VARCHAR" property="useTime" />
+        <result column="AREACODENAME" jdbcType="VARCHAR" property="areaCodeName" />
+        <result column="AREACODE" jdbcType="VARCHAR" property="areaCode" />
+
+    </resultMap>
+
+    <sql id="baseIpSegSql">
+        a.IPSEGID,a.HOUSEID,a.STARTIP,a.ENDIP,a.IPTYPE,a.USERNAME,a.USETIME,
+        a.SUBORDINATEUNIT_AREACODE AS AREACODE
+    </sql>
+
+    <select id="getIpSegList" parameterType="long" resultMap="baseIpSegMap">
+        SELECT
+        <include refid="baseIpSegSql"/>,
+        <include refid="joinSql"/>,
+        c.AREA_NAME AS AREACODENAME
+        FROM IDC_ISMS_BASE_HOUSE_IPSEG a
+        INNER JOIN IDC_ISMS_BASE_HOUSE b ON a.HOUSEID = b.HOUSEID
+        LEFT JOIN  DIC_SUBORDINATIONAREA c ON a.SUBORDINATEUNIT_AREACODE = c.AREA_CODE
+        WHERE a.HOUSEID = #{houseId}
+    </select>
+
+    <select id="getRptIpSegList" parameterType="long" resultMap="baseIpSegMap">
+        SELECT
+        <include refid="baseIpSegSql"/>,
+        <include refid="joinSql"/>,
+        c.AREA_NAME AS AREACODENAME
+        FROM RPT_ISMS_BASE_HOUSE_IPSEG a
+        INNER JOIN RPT_ISMS_BASE_HOUSE b ON a.HOUSEID = b.HOUSEID
+        LEFT JOIN  DIC_SUBORDINATIONAREA c ON a.SUBORDINATEUNIT_AREACODE = c.AREA_CODE
+        WHERE a.HOUSEID = #{houseId}
+    </select>
+
+    <!-- 机架嵌套查询 -->
+    <sql id="baseFrameSql">
+        a.FRAMEID,a.FRAMENAME,a.OCCUPANCY,a.USETYPE,
+        a.SUBORDINATEUNIT_AREACODE AS AREACODE
+    </sql>
+
+    <resultMap id="baseFrameMap" type="com.aotain.datamanagerweb.model.dataexport.house.ExportHouseFrameInformation">
+        <id column="FRAMEID" jdbcType="VARCHAR" property="frameId" />
+        <result column="HOUSENAME" jdbcType="VARCHAR" property="houseName" />
+        <result column="FRAMENAME" jdbcType="VARCHAR" property="frameName" />
+        <result column="OCCUPANCY" jdbcType="VARCHAR" property="occupancyStr" />
+        <result column="USETYPE" jdbcType="VARCHAR" property="useTypeStr" />
+        <result column="UNITNAMES" jdbcType="VARCHAR" property="unitNames"/>
+        <result column="AREACODENAME" jdbcType="VARCHAR" property="areaCodeName" />
+        <result column="AREACODE" jdbcType="VARCHAR" property="areaCode" />
+    </resultMap>
+
+    <select id="getFrameList" parameterType="long" resultMap="baseFrameMap">
+        SELECT
+        <include refid="baseFrameSql"/>,
+        <include refid="joinSql"/>,
+        c.UNITNAME AS UNITNAMES,
+        d.AREA_NAME AS AREACODENAME
+        FROM IDC_ISMS_BASE_HOUSE_FRAME a
+        INNER JOIN IDC_ISMS_BASE_HOUSE b ON a.HOUSEID = b.HOUSEID
+        LEFT JOIN (select FRAMEID,wm_concat(bb.UNITNAME) AS UNITNAME from
+        IDC_ISMS_BASE_USER_FRAME bb
+        group by HOUSEID,FRAMEID) c ON a.FRAMEID=c.FRAMEID
+        LEFT JOIN  DIC_SUBORDINATIONAREA d ON a.SUBORDINATEUNIT_AREACODE = d.AREA_CODE
+        WHERE a.HOUSEID = #{houseId}
+    </select>
+
+    <select id="getRptFrameList" parameterType="long" resultMap="baseFrameMap">
+        SELECT
+        <include refid="baseFrameSql"/>,
+        <include refid="joinSql"/>,
+        c.UNITNAME AS UNITNAMES,
+        d.AREA_NAME AS AREACODENAME
+        FROM RPT_ISMS_BASE_HOUSE_FRAME a
+        INNER JOIN RPT_ISMS_BASE_HOUSE b ON a.HOUSEID = b.HOUSEID
+        LEFT JOIN (select FRAMEID,wm_concat(bb.USERNAME) AS UNITNAME from
+        RPT_ISMS_BASE_HOUSE_USERFRAME bb
+        group by HOUSEID,FRAMEID) c ON a.FRAMEID=c.FRAMEID
+        LEFT JOIN  DIC_SUBORDINATIONAREA d ON a.SUBORDINATEUNIT_AREACODE = d.AREA_CODE
+        WHERE a.HOUSEID = #{houseId}
+    </select>
+
+
+    <!-- 链路嵌套查询 -->
+    <resultMap id="baseGatewayMap" type="com.aotain.datamanagerweb.model.dataexport.house.ExportGatewayInformation">
+        <id column="GATEWAYID" jdbcType="DECIMAL" property="gatewayId" />
+        <result column="HOUSENAME" jdbcType="VARCHAR" property="houseName" />
+        <result column="BANDWIDTH" jdbcType="DECIMAL" property="bandWidth" />
+        <result column="GATEWAYIP" jdbcType="VARCHAR" property="gatewayIP" />
+        <result column="LINKNO" jdbcType="DECIMAL" property="linkNo" />
+        <result column="AREACODENAME" jdbcType="VARCHAR" property="areaCodeName" />
+        <result column="AREACODE" jdbcType="VARCHAR" property="areaCode" />
+    </resultMap>
+
+    <sql id="baseGatewaySql">
+        a.GATEWAYID,a.HOUSEID,a.BANDWIDTH,a.GATEWAYIP,a.LINKNO,a.SUBORDINATEUNIT_AREACODE AS AREACODE
+    </sql>
+
+    <select id="getGatewayList" parameterType="long" resultMap="baseGatewayMap">
+        SELECT
+        <include refid="baseGatewaySql"/>,
+        <include refid="joinSql"/>,
+        c.AREA_NAME AS AREACODENAME
+        FROM IDC_ISMS_BASE_HOUSE_GATEWAY a
+        INNER JOIN IDC_ISMS_BASE_HOUSE b ON a.HOUSEID = b.HOUSEID
+        LEFT JOIN  DIC_SUBORDINATIONAREA c ON a.SUBORDINATEUNIT_AREACODE = c.AREA_CODE
+        WHERE a.HOUSEID = #{houseId}
+    </select>
+
+    <select id="getRptGatewayList" parameterType="long" resultMap="baseGatewayMap">
+        SELECT
+        <include refid="baseGatewaySql"/>,
+        <include refid="joinSql"/>,
+        c.AREA_NAME AS AREACODENAME
+        FROM RPT_ISMS_BASE_HOUSE_GATEWAY a
+        INNER JOIN RPT_ISMS_BASE_HOUSE b ON a.HOUSEID = b.HOUSEID
+        LEFT JOIN  DIC_SUBORDINATIONAREA c ON a.SUBORDINATEUNIT_AREACODE = c.AREA_CODE
+        WHERE a.HOUSEID = #{houseId}
+    </select>
+
+
+    <sql id="detailColumnRpt">
+        a.JYZID as jyzId,
+        a.HOUSEID as houseId,
+        a.HOUSEIDSTR as houseIdStr,
+        a.HOUSENAME as houseName,
+        a.HOUSETYPE as houseType,
+        a.HOUSEPROVINCE as houseProvince,
+        a.HOUSECITY as houseCity,
+        a.HOUSECOUNTY as houseCounty,
+        a.HOUSEADD as houseAddress,
+        a.HOUSEZIP as houseZipCode,
+        a.HO_NAME as houseOfficerName,
+        a.HO_IDTYPE as houseOfficerIdType,
+        a.HO_ID as houseOfficerId,
+        a.HO_TEL as houseOfficerTelephone,
+        a.HO_MOBILE as houseOfficerMobile,
+        a.HO_EMAIL as houseOfficerEmail,
+        a.CREATE_TIME as createTime,
+        a.UPDATE_TIME as updateTime,
+        a.CREATE_USERID as createUserId,
+        a.UPDATE_USERID as updateUserId,
+        a.IDENTIFY AS identify,
+        b.MC as provinceName,
+        c.MC as cityName,
+        d.MC as countyName
+    </sql>
+
+    <select id="getExportDataRpt" parameterType="com.aotain.cu.serviceapi.dto.HouseInformationDTO"
+            resultMap="rptHouseInformationMap">
+        select <include refid="detailColumnRpt"/>
+        from (( RPT_ISMS_BASE_HOUSE a left join IDC_JCDM_XZQYDM b on a.HOUSEPROVINCE = b.CODE and b.CODELEVEL=1 )
+        left join IDC_JCDM_XZQYDM c on a.HOUSECITY = c.CODE and c.CODELEVEL=2 )
+        left join IDC_JCDM_XZQYDM d on a.HOUSECOUNTY = d.CODE and d.CODELEVEL=3
+        WHERE 1 = 1
+        <if test="userAuthHouseList != null and userAuthHouseList.size > 0">
+            AND  a.HOUSEID in
+            <foreach collection="userAuthHouseList" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="userAuthIdentityList != null and userAuthIdentityList.size > 0">
+            AND  a.IDENTIFY in
+            <foreach collection="userAuthIdentityList" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="houseName!=null and houseName!=''">
+            AND  a.HOUSENAME LIKE '%'||#{houseName}||'%'
+        </if>
+        <if test="houseIdStr!=null and houseIdStr!=''">
+            AND  a.HOUSEIDSTR LIKE '%'||#{houseIdStr}||'%'
+        </if>
+        <if test="houseOfficerName!=null and houseOfficerName!=''">
+            AND a.HO_NAME  like '%'||#{houseOfficerName}||'%'
+        </if>
+        <if test="houseProvince!=null">
+            AND a.HOUSEPROVINCE = #{houseProvince}
+        </if>
+        <if test="houseCity!=null">
+            AND a.HOUSECITY = #{houseCity}
+        </if>
+        <if test="houseCounty!=null">
+            AND a.HOUSECOUNTY = #{houseCounty}
+        </if>
+        <if test="houseType!=null">
+            AND a.HOUSETYPE = #{houseType}
+        </if>
+        <if test="identity!=null">
+            AND a.IDENTIFY = #{identity}
+        </if>
+        <if test="startDate!=null and startDate!=''">
+            AND  #{startDate} &lt;= to_char(a.UPDATE_TIME,'yyyy-mm-dd')
+        </if>
+        <if test="endDate!=null and endDate!=''">
+            AND  #{endDate} &gt;= to_char(a.UPDATE_TIME,'yyyy-mm-dd')
+        </if>
+        <if test="jyzId!=null">
+            AND a.JYZID = #{jyzId}
+        </if>
+    </select>
+
+    <sql id="queryClums">
+        a.JYZID as jyzId,
+        a.HOUSEID as houseId,
+        a.HOUSEIDSTR as houseIdStr,
+        a.HOUSENAME as houseName,
+        a.HOUSETYPE as houseType,
+        a.HOUSEPROVINCE as houseProvince,
+        a.HOUSECITY as houseCity,
+        a.HOUSECOUNTY as houseCounty,
+        a.HOUSEADD as houseAddress,
+        a.HOUSEZIP as houseZipCode,
+        a.HO_NAME as houseOfficerName,
+        a.HO_IDTYPE as houseOfficerIdType,
+        a.HO_ID as houseOfficerId,
+        a.HO_TEL as houseOfficerTelephone,
+        a.HO_MOBILE as houseOfficerMobile,
+        a.HO_EMAIL as houseOfficerEmail,
+        a.CZLX as czlx,
+        a.DEAL_FLAG as dealFlag,
+        a.CREATE_TIME as createTime,
+        a.UPDATE_TIME as updateTime,
+        a.CREATE_USERID as createUserId,
+        a.UPDATE_USERID as updateUserId,
+        a.INFO_COMPLETE as infoComplete,
+        a.DEL_FLAG as delFlag,
+        a.IDENTIFY AS identify,
+        a.SUBORDINATEUNIT_AREACODE AS areaCode,
+        b.MC as provinceName,
+        c.MC as cityName,
+        d.MC as countyName
+    </sql>
+
+    <select id="getExportData" parameterType="com.aotain.cu.serviceapi.dto.HouseInformationDTO"
+            resultMap="houseInformationMap">
+        select <include refid="queryClums"/>
+        from (( IDC_ISMS_BASE_HOUSE a left join IDC_JCDM_XZQYDM b on a.HOUSEPROVINCE = b.CODE and b.CODELEVEL=1 )
+        left join IDC_JCDM_XZQYDM c on a.HOUSECITY = c.CODE and c.CODELEVEL=2 )
+        left join IDC_JCDM_XZQYDM d on a.HOUSECOUNTY = d.CODE and d.CODELEVEL=3
+        WHERE 1 = 1
+        <if test="userAuthHouseList != null and userAuthHouseList.size > 0">
+            AND  a.HOUSEID in
+            <foreach collection="userAuthHouseList" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="userAuthIdentityList != null and userAuthIdentityList.size > 0">
+            AND  a.IDENTIFY in
+            <foreach collection="userAuthIdentityList" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+        <if test="houseName!=null and houseName!=''">
+            AND  a.HOUSENAME LIKE '%'||#{houseName}||'%'
+        </if>
+        <if test="houseIdStr!=null and houseIdStr!=''">
+            AND  a.HOUSEIDSTR LIKE '%'||#{houseIdStr}||'%'
+        </if>
+        <if test="dealFlag!=null">
+            AND a.DEAL_FLAG = #{dealFlag}
+        </if>
+        <if test="czlx!=null">
+            AND a.CZLX = #{czlx}
+        </if>
+        <if test="houseOfficerName!=null and houseOfficerName!=''">
+            AND a.HO_NAME  like '%'||#{houseOfficerName}||'%'
+        </if>
+        <if test="houseProvince!=null">
+            AND a.HOUSEPROVINCE = #{houseProvince}
+        </if>
+        <if test="houseCity!=null">
+            AND a.HOUSECITY = #{houseCity}
+        </if>
+        <if test="houseCounty!=null">
+            AND a.HOUSECOUNTY = #{houseCounty}
+        </if>
+        <if test="houseType!=null">
+            AND a.HOUSETYPE = #{houseType}
+        </if>
+        <if test="identity!=null">
+            AND a.IDENTIFY = #{identity}
+        </if>
+        <if test="startDate!=null and startDate!=''">
+            AND  #{startDate} &lt;= to_char(a.UPDATE_TIME,'yyyy-mm-dd')
+        </if>
+        <if test="endDate!=null and endDate!=''">
+            AND  #{endDate} &gt;= to_char(a.UPDATE_TIME,'yyyy-mm-dd')
+        </if>
+        <if test="jyzId!=null">
+            AND a.JYZID = #{jyzId}
+        </if>
+    </select>
+
+    <select id="getHouseIdByHouseName" parameterType="string" resultType="string" useCache="true">
+        SELECT HOUSEID FROM IDC_ISMS_BASE_HOUSE
+        WHERE HOUSENAME = #{houseName}
+    </select>
+
+    <select id="getHouseIdAndIdentify" parameterType="string" resultType="com.aotain.cu.serviceapi.dto.HouseInformationDTO" useCache="true">
+        SELECT HOUSEID,IDENTIFY FROM IDC_ISMS_BASE_HOUSE
+        WHERE HOUSENAME = #{houseName}
+    </select>
+</mapper>

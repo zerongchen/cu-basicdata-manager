@@ -1,0 +1,176 @@
+<div th:fragment="userdetail">
+    <div class="modal inmodal fade modaladd" id="details" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="wrapper wrapper-content hper100">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="ibox">
+                        <div class="ibox-content no-borders">
+                            <label>
+                                <h4>用户详细信息</h4>
+                            </label>
+                            <div class="pull-right m-b-xs">
+                                <input type="hidden" id="detailUserId"/>
+                                <input type="hidden" id="detailIdType"/>
+                                <input type="hidden" id="detailIdNumber"/>
+                                <input type="hidden" id="detailUserName"/>
+                                <button type="button" class="btn btn-outline  btn-primary" id="detail_approv"><i class="fa fa-legal"></i> 预审</button>
+                                <button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-reply-all"></i> 返回上一级</button>
+                            </div>
+                            <div class="ibox border m-b-sm">
+                                <div class="ibox-title no-borders">
+                                    <h5>主体信息</h5>
+                                </div>
+                                <div class="ibox-content">
+                                    <form class="form-horizontal">
+                                        <div class="row no-margins">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label p-n">用户属性：</label>
+                                                    <div class="col-md-9 control-label text-left txtoverflow "><spand id="nature_dt"></spand></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label p-n" >单位名称：</label>
+                                                    <div class="col-md-9 control-label text-left txtoverflow " id="unitName_dt">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label p-n">单位属性：</label>
+                                                    <div class="col-md-9 control-label text-left txtoverflow "> <spand id="unitNature_dt"></spand> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row no-margins">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label p-n">证件类型：</label>
+                                                    <div class="col-md-9 control-label text-left txtoverflow "> <spand id="idType_dt"></spand></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label p-n">证件号码：</label>
+                                                    <div class="col-md-9 control-label text-left txtoverflow "> <spand id="idNumber_dt"></spand> </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label p-n">注册日期：</label>
+                                                    <div class="col-md-9 control-label text-left txtoverflow "> <spand id="registeTime_dt"></spand> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row no-margins">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label p-n">邮政编码：</label>
+                                                    <div class="col-md-9 control-label text-left txtoverflow " id="unitZipCode_dt"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label p-n ">单位地址：</label>
+                                                    <div class="col-md-9 control-label text-left txtoverflow"> <spand id="unitAddress_dt"></spand> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row no-margins">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label p-n">联系人：</label>
+                                                    <div class="col-md-9 control-label text-left txtoverflow "> <spand id="officerName_dt"></spand></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label p-n">联系人证件：</label>
+                                                    <div class="col-md-9 control-label text-left txtoverflow "> <spand id="officerIdType_dt"></spand> </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label p-n">证件号码：</label>
+                                                    <div class="col-md-9 control-label text-left txtoverflow "> <spand id="officerId_dt"></spand> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row no-margins">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label p-n">联系人固话：</label>
+                                                    <div class="col-md-9 control-label text-left txtoverflow "> <spand id="officerTelphone_dt"></spand></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label p-n">联系人手机：</label>
+                                                    <div class="col-md-9 control-label text-left txtoverflow " id="officerMobile_dt"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label p-n">联系邮箱：</label>
+                                                    <div class="col-md-9 control-label text-left txtoverflow "> <spand id="officerEmail_dt"></spand> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row no-margins">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label p-n">服务开通时间：</label>
+                                                    <div class="col-md-9 control-label text-left txtoverflow "> <spand id="serviceRegTime_dt"></spand></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="tabs-container">
+                                        <ul class="nav nav-tabs" id="tabHead">
+                                            <li class="active"> <a data-toggle="tab" href="#tab1">用户服务信息</a> </li>
+                                            <li> <a data-toggle="tab" href="#tab2">用户网络资源</a> </li>
+                                            <li> <a data-toggle="tab" href="#tab3">用户IP信息</a> </li>
+                                            <li> <a data-toggle="tab" href="#tab4">虚拟主机信息</a> </li>
+                                        </ul>
+                                        <div class="tab-content ">
+                                            <div id="tab1" class="tab-pane active">
+                                                <!-- Example Toolbar -->
+                                                <div class="example-wrap text-right">
+                                                    <table id="serviceTableDetial" data-mobile-responsive="true" class="text-left"></table>
+                                                </div>
+                                                <!-- End Example Toolbar -->
+                                            </div>
+                                            <div id="tab2" class="tab-pane">
+                                                <div class="example-wrap text-right">
+                                                    <table id="bandWidthTableDetail" data-mobile-responsive="true" class="text-left">
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div id="tab3" class="tab-pane">
+                                                <div class="example-wrap text-right">
+                                                    <table id="ipTableDetail" data-mobile-responsive="true" class="text-left">
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div id="tab4" class="tab-pane">
+                                                <div class="example-wrap text-right">
+                                                    <table id="virtualTableDetail" data-mobile-responsive="true" class="text-left">
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

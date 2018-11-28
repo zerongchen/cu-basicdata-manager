@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header :: myheader"></head>
+<body class="gray-bg">
+<!-- 查询条件-->
+<div class="row wrapper border-bottom white-bg page-heading">
+<div class="col-sm-12">
+  <div class="text-right">
+    <form id="indexSearch" class="form-inline">
+      <div class="form-group m-r-sm" style="clear: both">
+        <label>单位名称</label>
+        <input type="text" class="form-control" name="unitName"/>
+      </div>
+      <div class="form-group m-r-sm">
+        <label>服务内容</label>
+        <select  class="form-control" id="searchContent" name="serviceContent">
+        </select>
+      </div>
+      <div class="form-group m-r-sm">
+          <label>接入方式</label>
+          <select class="form-control" id="setmode">
+          </select>
+        </div>
+      <div class="checkbox">
+        <button th:if="${session.RPT_USER_SERVICE_QUERY}==1" class="btn btn-primary" type="button" id="serviceIndexSearch">查询</button>
+        <button class="btn btn-outline btn-link" type="button" onClick="showsearch()">更多条件查询</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="row m-t m-r-none m-l onoffswitch-checkbox prompt-search">
+  <div class="col-sm-12 p-trbl">
+    <div class="text-left">
+      <form class="form-inline">
+        <div class="form-group m-r-sm">
+          <label>业务类型</label>
+          <select class="form-control" id="business">
+            <option value="">请选择</option>
+            <option value="1">IDC业务</option>
+            <option value="2">ISP业务</option>
+          </select>
+        </div>
+        <div class="form-group m-r-sm">
+          <label>服务域名</label>
+         <input type="text" id="domainName">
+        </div>
+        <div class="form-group m-r-sm">
+          <label>更新时间</label>
+          <input type="text" class="form-control" id="start">
+          <label>至</label>
+          <input type="text" class="form-control" id="end">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox ">
+        <div class="ibox-content">
+          <div class="row">
+            <div class="col-sm-12">
+              <!-- Example Toolbar -->
+              <div class="example-wrap text-right">
+                <div class="example">
+                  <table id="indexTable" data-mobile-responsive="true" class="text-left">
+                  </table>
+                </div>
+              </div>
+              <!-- End Example Toolbar -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--javascript加载 -->
+<div th:include="/common/footer :: myfooter"></div>
+<script th:src="@{{path}/static/js/rptUser/user_service.js(path=${contextPath})}"></script>
+<script th:src="@{{path}/static/js/common/table_hover.js(path=${contextPath})}"></script>
+</body>
+</html>

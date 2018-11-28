@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>基础数据智能管理系统-地市码管理</title>
+
+<link
+	th:href="@{{path}/static/css/plugins/select2/select2.min.css(path=${contextPath})}"
+	rel="stylesheet" />
+<link
+	th:href="@{{path}/static/css/bootstrap.min.css(path=${contextPath})}"
+	rel="stylesheet" />
+<link
+	th:href="@{{path}/static/js/TreeStyle/zTreeStyle.css(path=${contextPath})}"
+	rel="stylesheet" />
+<link
+	th:href="@{{path}/static/js/TreeStyle/zTreeStyle_ext.css(path=${contextPath})}"
+	rel="stylesheet" />
+
+<div th:include="/common/header :: myheader"></div>
+<div th:include="/common/footer :: myfooter"></div>
+<script
+	th:src="@{{path}/static/js/system/areaCode.js(path=${contextPath})}"></script>
+<script
+	th:src="@{{path}/static/js/common/isms-component-richselect.js(path=${contextPath})}"></script>
+
+<script
+	th:src="@{{path}/static/js/TreeStyle/jquery.ztree.core-3.2.js(path=${contextPath})}"
+	type="text/javascript" language="javascript"></script>
+<script
+	th:src="@{{path}/static/js/TreeStyle/jquery.ztree.excheck-3.2.js(path=${contextPath})}"
+	type="text/javascript" language="javascript"></script>
+<script
+	th:src="@{{path}/static/js/TreeStyle/jquery.ztree.exedit-3.2.js(path=${contextPath})}"
+	type="text/javascript" language="javascript"></script>
+</head>
+<body class="gray-bg" style="background-color: #f3f3f4;">
+
+	<!-- 查询条件-->
+	<div class="row wrapper border-bottom white-bg page-heading">
+		<div class="col-sm-12">
+			<div class="text-right">
+				<form id="indexSearch" class="form-inline">
+					<div class="col-sm-12">
+						<div class="form-group m-r-sm">
+							<label>区域名称</label> <input type="text" class="form-control"
+								name="mc" id="sel_mc" />
+							</select>
+						</div>
+						<div class="form-group m-r-sm">
+							<label>区域编码</label> <input type="text" class="form-control"
+								name="code" id="sel_code" />
+						</div>
+						<div class="form-group m-r-sm">
+							<label>邮编</label> <input type="text" class="form-control"
+								name="postCode" id="sel_postCode" />
+						</div>
+						<div class="checkbox">
+							<button class="btn btn-primary" type="button"
+								id="houseIndexSearch">查询</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="wrapper wrapper-content animated fadeInRight">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="ibox ">
+					<div class="ibox-content">
+						<div class="row">
+							<div class="col-sm-12">
+								<!-- Example Toolbar -->
+								<div class="example-wrap text-right">
+									<div class="example">
+										<table style="height: 400px">
+											<tr>
+												<td style="height: 400px; vertical-align: top">
+													<div class="zTreeDemoBackground left">
+														<label id="chooseAreaName"></label>
+														<ul id="user_tree" class="ztree"></ul>
+														<p class="team">
+															<label id="sourIds_error" class="error"></label>
+														</p>
+													</div>
+												</td>
+												<td style="vertical-align: top">
+													<div class="hidden-xs" id="commonButton" role="group">
+														<button type="button" id="inserButton"
+															class="btn btn-outline btn-info m-l-xs"
+															data-toggle="modal" data-target="#myModaladdFobidden">
+															<i class="fa fa-plus" aria-hidden="true"></i> 新增
+														</button>
+														<button type="button" class="btn btn-outline btn-info"
+															id="allDelte" data-toggle="modal" data-target="#delete">
+															<i class="fa fa-delete" aria-hidden="true"></i> 批量删除
+														</button>
+														<div class="btn-group">
+								                            <button type="button" id="provinceButton"  data-toggle="dropdown" class="btn btn-info dropdown-toggle"> 部署省份设置 <span class="caret"></span></button>
+								                            <ul class="dropdown-menu" id="provinceAdd">
+								                            </ul>
+								                         </div>
+													</div>
+													<table id="areaCodetable" data-mobile-responsive="true"
+														class="text-left">
+													</table>
+												</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+								<!-- End Example Toolbar -->
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+
+
+	<!--新增-->
+	<div class="modal inmodal fade modaladd" id="myModaladd" tabindex="-1"
+		role="dialog" aria-hidden="true">
+		<div class="wrapper wrapper-content hper100">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="ibox">
+						<div class="ibox-content no-borders">
+							<label>
+								<h4>新增信息</h4>
+								<h4 id="areaChoose"></h4>
+							</label>
+							<div class="ibox border m-b-sm">
+								<div class="ibox-title no-borders">
+									<h5>
+										<a class="addTitle" id="addFormTitle"><i
+											class="fa fa-plus m-r-xs"></i>新增</a>
+									</h5>
+								</div>
+								<div class="ibox-content">
+
+									<div class="form-horizontal">
+										<div class="row">
+											<div class="col-sm-12">
+												<form id="addForm0">
+													<input type="hidden" name="parentCode"> <input
+														type="hidden" name="codeLevel">
+													<div class="form-group">
+														<label class="col-md-2 control-label p-n"><span
+															class="text-danger">*&nbsp;</span>区域名称</label>
+														<div class="col-md-3">
+															<input type="text" name="mc" class="form-control">
+														</div>
+														<label id="mc_error" class="control-label p-n error"></label>
+													</div>
+													<div class="hr-line-dashed"></div>
+													<div class="form-group">
+														<label class="col-md-2 control-label p-n"><span
+															class="text-danger">*&nbsp;</span>区域编码</label>
+														<div class="col-md-3">
+															<input type="text" name="code" class="form-control" >
+														</div>
+														<label id="code_error" class="control-label p-n error"></label>
+													</div>
+													<div class="hr-line-dashed"></div>
+													<div class="form-group">
+														<label class="col-md-2 control-label p-n"><span
+															class="text-danger">*&nbsp;</span>邮编</label>
+														<div class="col-md-3">
+															<input type="text" name="postCode" class="form-control" >
+														</div>
+														<label id="postCode_error" class="control-label p-n error"></label>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div id="bottomDIv"></div>
+							<input id="addStep" value="0" style="display: none" />
+						</div>
+						<div class="form-group m-t clear">
+							<div class="col-md-offset-2 col-md-3">
+								<button id="btnAdd" type="button" class="btn btn-primary save">提交</button>
+								<a id="btnCancel" class="m-l-sm" data-dismiss="modal">取消</a>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+
+
+	<!--修改-->
+	<div class="modal inmodal fade modaladd" id="myModaledit" tabindex="-1"
+		role="dialog" aria-hidden="true">
+		<div class="wrapper wrapper-content hper100">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="ibox">
+						<form id="editForm">
+							<div class="ibox-content no-borders">
+								<label>
+									<h4>修改信息</h4>
+								</label>
+								<div class="ibox border m-b-sm">
+									<div class="ibox-content">
+
+										<div class="form-horizontal">
+											<div class="row">
+												<div class="col-sm-12">
+													<input type="hidden" name="id"> <input
+														type="hidden" name="parentCode">
+													<div class="form-group">
+														<label class="col-md-2 control-label p-n"><span
+															class="text-danger">*&nbsp;</span>区域名称</label>
+														<div class="col-md-3">
+															<input type="text" name="mc" class="form-control" >
+														</div>
+														<label id="mc_error" class="control-label p-n error"></label>
+													</div>
+													<div class="hr-line-dashed"></div>
+													<div class="form-group">
+														<label class="col-md-2 control-label p-n"><span
+															class="text-danger">*&nbsp;</span>区域编码</label>
+														<div class="col-md-3">
+															<input type="text" name="code" class="form-control" >
+														</div>
+														<label id="code_error" class="control-label p-n error"></label>
+													</div>
+													<div class="hr-line-dashed"></div>
+													<div class="form-group">
+														<label class="col-md-2 control-label p-n"><span
+															class="text-danger">*&nbsp;</span>邮编</label>
+														<div class="col-md-3">
+															<input type="text" name="postCode" class="form-control" >
+														</div>
+														<label id="postCode_error" class="control-label p-n error"></label>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-group m-t clear">
+									<div class="col-md-offset-2 col-md-3">
+										<button id="btnEdit" type="button"
+											class="btn btn-primary save">确认</button>
+										<a id="btnCancelEdit" class="m-l-sm" data-dismiss="modal">取消</a>
+									</div>
+								</div>
+							</div>
+						</form>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+</html>

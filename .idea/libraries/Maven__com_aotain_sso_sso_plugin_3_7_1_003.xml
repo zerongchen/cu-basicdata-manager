@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.aotain.sso:sso-plugin:3.7.1.003">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/aotain/sso/sso-plugin/3.7.1.003/sso-plugin-3.7.1.003.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/aotain/sso/sso-plugin/3.7.1.003/sso-plugin-3.7.1.003-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/aotain/sso/sso-plugin/3.7.1.003/sso-plugin-3.7.1.003-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

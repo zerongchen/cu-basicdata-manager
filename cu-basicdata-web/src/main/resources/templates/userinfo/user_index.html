@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header :: myheader">
+
+	<!--<script th:src="@{{path}/static/js/userinfo/user_main.js(path=${contextPath})}"></script>-->
+	<!--<script th:src="@{{path}/static/js/common/isms-component-richselect.js(path=${contextPath})}"></script>-->
+</head>
+<body class="gray-bg">
+<!-- 查询条件-->
+<div class="row wrapper border-bottom white-bg page-heading">
+<div class="col-sm-12">
+  <div th:if="${session.ROLE_PRE_USER_QUERY}" class="text-right">
+    <form id="indexSearch" class="form-inline">
+      <div class="form-group m-r-sm" style="clear: both">
+        <label>单位名称</label>
+        <input type="text" class="form-control" id="sel_unitName" name="unitName"/>
+      </div>
+      <div class="form-group m-r-sm">
+          <label>用户属性</label>
+          <select class="form-control" id="sel_nature" name="nature">
+            <option value="">请选择</option>
+            <option value="1">提供互联网用户</option>
+            <option value="2">其他用户</option>
+          </select>
+       </div>
+       <div class="form-group m-r-sm">
+        <label>用户标识</label>
+        <select class="form-control" name="identify" id="sel_identify">
+          <option value="">请选择</option>
+          <option value="1">IDC用户</option>
+          <option value="2">ISP用户</option>
+          <option value="3">IDC/ISP用户</option>
+          <option value="4">CDN用户</option>
+          <option value="5">专线用户</option>
+        </select>
+      </div>
+      <div class="form-group m-r-sm">
+        <label>处理状态</label>
+        <select class="form-control" name="dealFlag" id="sel_dealFlag">
+          <option value="">请选择</option>
+          <option value="0">未预审</option>
+          <option value="1">预审不通过</option>
+          <option value="2">上报审核中</option>
+          <option value="3">上报审核不通过</option>
+          <option value="4">提交上报</option>
+          <option value="5">上报成功</option>
+          <option value="6">上报失败</option>
+       </select>
+      </div>
+      <div class="form-group m-r-sm">
+        <label>操作类型</label>
+        <select class="form-control" name="czlx" id="sel_czlx">
+          <option value="">请选择</option>
+          <option value="1">新增</option>
+          <option value="2">变更</option>
+          <option value="3">删除</option>
+        </select>
+      </div>
+      <div class="checkbox">
+        <button  class="btn btn-primary" type="button" id="houseIndexSearch">查询</button>
+        <button class="btn btn-outline btn-link" type="button" onClick="showsearch()">更多条件查询</button>
+      </div>
+    </form>
+  </div>
+</div>
+  <!-- 更多查询 -->
+<div class="row m-t m-r-none m-l onoffswitch-checkbox prompt-search">
+  <div class="col-sm-12 p-trbl">
+    <div class="text-left">
+      <form class="form-inline" id="moreSearchForm">
+      	<label>机房名称</label>
+  		<div class="form-group m-r-sm">
+          <select class="form-control"  multiple="multiple" name="houseId" id="ser_house" >
+          </select>
+        </div>
+        <div class="form-group m-r-sm">
+        <label>网络负责人</label>
+        <input type="text" class="form-control" name="officerName" id="sel_officerName"/>
+       </div>
+       <div class="form-group m-r-sm">
+        <label>单位地址</label>
+        <input type="text" class="form-control" name="unitAddress" id="sel_unitAddress"/>
+      </div>
+      <div class="form-group m-r-sm">
+            <label>更新时间</label>
+            <input type="text" class="form-control" id="start">
+            <label>至</label>
+            <input type="text" class="form-control" id="end">
+      </div>
+     </form>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox ">
+        <div class="ibox-content">
+          <div class="row">
+            <div class="col-sm-12">
+              <!-- Example Toolbar -->
+              <div class="example-wrap text-right">
+                <div class="example">
+                  <div class="hidden-xs" id="commonButton" role="group">
+                    <button th:if="${session.ROLE_PRE_USER_ADD}" type="button" class="btn btn-outline btn-info  m-l-xs" data-toggle="modal" data-target="#add-modal" id="userAddBt"> <i class="fa fa-plus" aria-hidden="true"></i> 新增</button>
+                    <button th:if="${session.ROLE_PRE_USER_IMPORT}" type="button" class="btn btn-outline btn-info uploadFile"  id="uploadUser" > <i class="fa fa-upload" aria-hidden="true"></i> 导入</button>
+                    <button th:if="${session.ROLE_PRE_USER_EXPORT}" type="button" class="btn btn-outline btn-info" id="exportData"> <i class="fa fa-download"  aria-hidden="true"></i> 导出</button>
+                    <button th:if="${session.ROLE_PRE_USER_BATCH_APPROVE}" type="button" class="btn btn-outline btn-info"  id="index_approv"> <i class="fa fa-paste" aria-hidden="true"></i> 批量预审</button>
+                    <button th:if="${session.ROLE_PRE_USER_BATCH_DEL}" type="button" class="btn btn-outline btn-danger demo4"  id="index_delete"> <i class="fa fa-trash-o" aria-hidden="true"></i> 批量删除</button>
+                    <input th:value="${session.ROLE_PRE_USER_UPDATE}" type="hidden" id="updateRole">
+                    <input th:value="${session.ROLE_PRE_USER_DEL}" type="hidden" id="delRole">
+                    <input th:value="${session.ROLE_PRE_USER_APPROVE}" type="hidden" id="approveRole">
+                    <input th:value="${session.ROLE_PRE_USER_REVOKE}" type="hidden" id="revokeRole">
+                    <input th:value="${session.ROLE_PRE_USER_DETAIL}" type="hidden" id="detailRole">
+                    <input th:value="${session.ROLE_PRE_USER_NATURE}" type="hidden" id="natureRole">
+                  </div>
+                  <table th:if="${session.ROLE_PRE_USER_QUERY}" id="indexTable" data-mobile-responsive="true" class="text-left">
+                  </table>
+                </div>
+              </div>
+              <!-- End Example Toolbar -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--审核结果-->
+<div class="modal inmodal fade modaladd" id="audit_results" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="wrapper wrapper-content hper100">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="ibox">
+          <div class="ibox-content no-borders">
+            <label id="chkResult">
+              <h4 >核验结果<span style="font-size: 12px">（注：请点击刷新查看最新处理进度）</span></h4>
+            </label>
+            <div class="pull-right">
+              <input type="hidden" id="resultUserId">
+              <button type="button" id="refreshBtn" class="btn btn-outline btn-info" onclick="refreshResult()"><i class="fa fa-refresh"></i> 刷新</button>
+              <!-- <button type="button" class="btn btn-outline btn-info" id="resultExport"><i class="fa fa-download"></i> 导出</button>
+               <a  download="核验结果.txt" id="createInvote"  style="display: none">code</a>-->
+              <button type="button" id="returnBtn" class="btn btn-success" data-dismiss="modal"><i class="fa fa-reply-all"></i> 返回</button>
+            </div>
+          </div>
+
+          <div class="vertical-container light-timeline" id="vertical-timeline">
+          </div>
+		  <div class="vertical-container light-timeline" id="reportFile">
+		  	<table  id="reportFileTable" data-mobile-responsive="true" class="text-left">
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--html -->
+<div th:include="/userinfo/useradd :: useradd"></div>
+<div th:include="/userinfo/usermodify :: userModify"></div>
+<div th:include="/common/import_snippet :: import"></div>
+<div th:include="/userinfo/userdetail :: userdetail"></div>
+
+<!--javascript加载 -->
+<div th:include="/common/footer :: myfooter"></div>
+<div th:include="/common/footer :: #userInfo"></div>
+
+</body>
+</html>

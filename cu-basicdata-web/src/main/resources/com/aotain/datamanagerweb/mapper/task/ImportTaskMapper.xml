@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aotain.datamanagerweb.mapper.task.ImportTaskMapper">
+
+   <insert id="insert" parameterType="com.aotain.cu.serviceapi.model.ImportTaskModel">
+       
+       <selectKey keyProperty="taskId" resultType="java.lang.Long" order="BEFORE">
+           SELECT SEQ_ISMS_IMPORT_TASK.NEXTVAL as taskId FROM dual
+       </selectKey>
+       INSERT INTO IDC_ISMS_IMPORT_TASK
+       <trim prefix="(" suffix=")" suffixOverrides=",">
+           TASK_ID,
+           <if test="taskType!=null">
+               TASK_TYPE,
+           </if>
+           <if test="importType!=null">
+               IMPORT_TYPE,
+           </if>
+           <if test="fileName!=null">
+               FILE_NAME,
+           </if>
+           <if test="status!=null">
+               STATUS,
+           </if>
+           <if test="createUserId!=null">
+               CREATE_USERID,
+           </if>
+           <if test="serverIp!=null">
+               SERVER_IP,
+           </if>
+       </trim>
+       <trim prefix="values (" suffix=")" suffixOverrides=",">
+           #{taskId},
+           <if test="taskType!=null">
+               #{taskType},
+           </if>
+           <if test="importType!=null">
+               #{importType},
+           </if>
+           <if test="fileName!=null">
+               #{fileName},
+           </if>
+           <if test="status!=null">
+               #{status},
+           </if>
+           <if test="createUserId!=null">
+               #{createUserId},
+           </if>
+           <if test="serverIp!=null">
+               #{serverIp},
+           </if>
+       </trim>
+   </insert>
+    
+    <update id="update" parameterType="com.aotain.cu.serviceapi.model.ImportTaskModel">
+        UPDATE IDC_ISMS_IMPORT_TASK
+        <set>
+            <if test="taskType!=null">
+                TASK_TYPE=#{taskType},
+            </if>
+            <if test="importType!=null">
+                IMPORT_TYPE=#{importType},
+            </if>
+            <if test="fileName!=null">
+                FILE_NAME=#{fileName},
+            </if>
+            <if test="status!=null">
+                STATUS=#{status},
+            </if>
+            <if test="createUserId!=null">
+                CREATE_USERID=#{createUserId},
+            </if>
+            <if test="serverIp!=null">
+                SERVER_IP=#{serverIp},
+            </if>
+            <if test="errorFileName!=null">
+                ERROR_FILE_NAME=#{errorFileName},
+            </if>
+            FINISH_TIME=SYSDATE,
+        </set>
+        WHERE TASK_ID=#{taskId}
+        
+    </update>
+    
+    <select id="isImporting" parameterType="com.aotain.cu.serviceapi.model.ImportTaskModel" resultType="int">
+        
+        SELECT count(*) from IDC_ISMS_IMPORT_TASK where STATUS=1 and CREATE_USERID=#{createUserId}
+        <if test="taskType!=null">
+            AND TASK_TYPE=#{taskType}
+        </if>
+    </select>
+    
+    <select id="selectByUserId" parameterType="java.util.Map" resultType="com.aotain.cu.serviceapi.model.ImportTaskModel">
+        SELECT * from (
+            SELECT TASK_ID AS taskId, ERROR_FILE_NAME as errorFileName ,STATUS AS status ,SERVER_IP AS serverIp
+            FROM IDC_ISMS_IMPORT_TASK
+            WHERE CREATE_USERID=#{userId}
+            <if test="type!=null">
+                AND TASK_TYPE=#{type}
+            </if>
+            ORDER BY CREATE_TIME DESC
+        )b where rownum=1
+    </select>
+
+</mapper>

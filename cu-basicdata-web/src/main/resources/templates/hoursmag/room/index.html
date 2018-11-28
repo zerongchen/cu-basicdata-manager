@@ -1,0 +1,666 @@
+<!DOCTYPE html >
+<html lang="zh-CN"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>基础数据智能管理系统-机房主体信息预录入管理-机房主体信息管理</title>
+
+<!--<link rel="shortcut icon" href="favicon.ico">-->
+  <div th:include="/common/header :: myheader"></div>
+
+</head>
+<body class="gray-bg">
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-12">
+    <div class="text-right">
+      <form role="form" class="form-inline">
+        <div class="form-group m-r-sm">
+          <label>机房名称</label>
+          <input type="text" class="form-control" />
+        </div>
+        <div class="form-group m-r-sm">
+          <label>机房编号</label>
+          <input type="text" class="form-control" />
+        </div>
+        <div class="form-group m-r-sm text-left">
+          <label>处理状态</label>
+          <select class="form-control " id="select1">
+            <option value="预审通过">预审通过</option>
+            <option value="预审不通过">预审不通过</option>
+            <option value="预审中">预审中</option>
+            <option value="上报审核不通过">上报审核不通过</option>
+            <option value="上报成功">上报成功</option>
+            <option value="未预审">未预审</option>
+          </select>
+        </div>
+        <div class="checkbox">
+          <button class="btn btn-primary" type="submit">查询</button>
+          <button class="btn btn-outline btn-link" type="button" onClick="showsearch()">更多条件查询</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row m-t m-r-none m-l onoffswitch-checkbox prompt-search">
+    <div class="col-sm-12 p-trbl">
+      <div class="text-left">
+        <form class="form-inline">
+          <div class="form-group m-r-sm">
+            <label>机房负责人</label>
+            <input type="text" class="form-control" />
+          </div>
+          <div class="form-group m-r-sm">
+            <label>机房所在地</label>
+            <input type="text" class="form-control" />
+          </div>
+          <div class="form-group m-r-sm">
+            <label>机房性质</label>
+            <select class="form-control">
+              <option value="请选择">请选择</option>
+              <option value="租用">租用</option>
+              <option value="自建">自建</option>
+              <option value="其它">其它</option>
+            </select>
+          </div>
+          <div class="form-group m-r-sm">
+            <label>专线机房标识</label>
+            <select class="form-control">
+              <option value="请选择">请选择</option>
+              <option value="专线">专线</option>
+              <option value="非专线">非专线</option>
+            </select>
+          </div>
+          <div class="form-group m-r-sm">
+            <label>操作状态</label>
+            <select class="form-control">
+              <option value="请选择">请选择</option>
+              <option value="正常">正常</option>
+              <option value="删除">删除</option>
+            </select>
+          </div>
+          <div class="form-group m-r-sm">
+            <label>更新时间</label>
+            <input type="text" class="form-control" id="start">
+            <input type="text" class="form-control" id="end">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox ">
+        <div class="ibox-content">
+          <div class="row">
+            <div class="col-sm-12"> 
+              <!-- Example Toolbar -->
+              <div class="example-wrap text-right">
+                <div class="example">
+                  <div class="hidden-xs" id="commonButton" role="group">
+                    <div th:btn="add" ></div>
+                    <button type="button" class="btn btn-outline btn-info  m-l-xs"> <i class="fa fa-newspaper-o" aria-hidden="true"></i> 完整性核验</button>
+                    <button type="button" class="btn btn-outline btn-info" data-toggle="modal" data-target="#add-modal"> <i class="fa fa-plus" aria-hidden="true"></i> 新增</button>
+                    <button type="button" class="btn btn-outline btn-info" data-toggle="modal" data-target="#upload"> <i class="fa fa-upload" aria-hidden="true"></i> 导入</button>
+                    <button type="button" class="btn btn-outline btn-info"> <i class="fa fa-download" aria-hidden="true"></i> 导出</button>
+                    <button type="button" class="btn btn-outline btn-info"> <i class="fa fa-paste" aria-hidden="true"></i> 批量预审</button>
+                    <button type="button" class="btn btn-outline btn-danger demo4"> <i class="fa fa-trash-o" aria-hidden="true"></i> 批量删除</button>
+                  </div>
+                  <table id="table1" data-mobile-responsive="true" class="text-left">
+                    <!--<thead>-->
+                     <!--<tr>-->
+                        <!--<th data-field="checkbox" data-checkbox="true"></th>-->
+                        <!--<th data-field="name">机房ID</th>-->
+                        <!--<th data-field="star">机房编号</th>-->
+                        <!--<th data-field="time">专线标识</th>-->
+                        <!--<th data-field="description">机房名称</th>-->
+                        <!--<th data-field="nature">机房性质</th>-->
+                        <!--<th data-field="location">机房所在地</th>-->
+                        <!--<th data-field="user">机房负责人</th>-->
+                        <!--<th data-field="status">处理状态</th>-->
+                        <!--<th data-field="review">审核结果</th>-->
+                        <!--<th data-field="updated">更新时间</th>-->
+                        <!--<th data-field="operating" data-width="130">操作</th>-->
+                      <!--</tr> -->
+                    <!--</thead>-->
+                  </table>
+                </div>
+              </div>
+              <!-- End Example Toolbar --> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--导入-->
+<div class="modal inmodal fade modaladd" id="upload" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="wrapper wrapper-content hper100">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="ibox">
+          <div class="ibox-content no-borders">
+            <label>
+            <h4>导入</h4>
+            </label>
+            <div class="pull-right">
+              <button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-reply-all"></i> 返回</button>
+            </div>
+            <form class="form-horizontal" id="commentForm">
+              <div class="form-group">
+                <label class="col-md-1 control-label">操作</label>
+                <div class="col-md-4">
+                  <select class="form-control">
+                    <option value="请选择">请选择</option>
+                    <option value="全量">全量</option>
+                    <option value="增量" selected="">增量</option>
+                  </select>
+                </div>
+              </div>
+              <div class="hr-line-dashed"></div>
+              <div class="form-group">
+                <label class="col-md-1 control-label">文件</label>
+                <div class="col-md-4">
+                  <input type="file" class="form-control" />
+                </div>
+                <div class="help-block m-b-n"> <a>下载模板</a> </div>
+              </div>
+              <div class="hr-line-dashed"></div>
+              <div class="form-group">
+                <label class="col-md-1 control-label">上次进度</label>
+                <div class="col-md-4">
+                  <div class="progress m-b-n">
+                    <div style="width: 48%;" class="progress-bar">48%</div>
+                  </div>
+                </div>
+              </div>
+              <div class="hr-line-dashed"></div>
+              <div class="form-group">
+                <label class="col-md-1 control-label">导入结果</label>
+                <div class="col-md-4 help-block m-b-n"> 异常结果 </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--详情-->
+<div class="modal inmodal fade modaladd" id="details" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="wrapper wrapper-content hper100">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="ibox">
+          <div class="ibox-content no-borders">
+            <label>
+            <h4>机房详情<span class="m-l text-warning"><!--注：括号内颜色内容为变更前的内容--></span></h4>
+            </label>
+            <div class="pull-right m-b-xs">
+              <button type="button" class="btn btn-outline  btn-primary"><i class="fa fa-legal"></i> 预审</button>
+              <button type="button" class="btn btn-outline btn-primary" data-dismiss="modal"><i class="fa fa-download"></i> 导出</button>
+              <button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-reply-all"></i> 返回</button>
+            </div>
+             <div class="ibox border m-b-sm">
+              <div class="ibox-title no-borders">
+                <h5>机房主体信息</h5>
+              </div>
+              <div class="ibox-content">
+                <form class="form-horizontal">
+                  <div class="row no-margins">
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label class="col-md-3 control-label p-n">机房编号：</label>
+                        <div class="col-md-9 control-label text-left "> GD-GZ-1001 </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label class="col-md-3 control-label p-n"> 机房名称：</label>
+                        <div class="col-md-9 control-label text-left "> 广州天河区机房1<span class="text-info">（天河区机房3）</span> </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label class="col-md-3 control-label p-n"> 机房性质：</label>
+                        <div class="col-md-9 control-label text-left "> 自建 </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row no-margins">
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label class="col-md-3 control-label p-n">机房所在地：</label>
+                        <div class="col-md-9 control-label text-left "> 广州市-天河区 </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label class="col-md-3 control-label p-n"> 机房负责人：</label>
+                        <div class="col-md-9 control-label text-left "> 路飞 </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label class="col-md-3 control-label p-n"> 报备情况：</label>
+                        <div class="col-md-9 control-label text-left "> 已上报SMMS </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row no-margins">
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label class="col-md-3 control-label p-n">处理状态：</label>
+                        <div class="col-md-9 control-label text-left "> 已上报 </div>
+                      </div>
+                    </div>
+                 
+                  </div>
+                   </form>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="tabs-container">
+                  <ul class="nav nav-tabs">
+                    <li class="active"> <a data-toggle="tab" href="#tab1">IP信息管理</a> </li>
+                    <li> <a data-toggle="tab" href="#tab2">机架信息管理</a> </li>
+                    <li> <a data-toggle="tab" href="#tab3">链路管理</a> </li>
+                  </ul>
+                  <div class="tab-content ">
+                    <div id="tab1" class="tab-pane active"> 
+                      <!-- Example Toolbar -->
+                      <div class="example-wrap text-right">
+                        <form role="form" class="form-inline m-t-sm">
+                          <div class="form-group m-r-md">
+                            <label>起始IP：</label>
+                            <input type="text" class="form-control" />
+                          </div>
+                          <div class="form-group m-r-md">
+                            <label>结束IP：</label>
+                            <input type="text" class="form-control" />
+                          </div>
+                          <div class="form-group m-r-md">
+                            <label>使用人单位名称：</label>
+                            <input type="text" class="form-control" />
+                          </div>
+                          <div class="checkbox">
+                            <button class="btn btn-primary" type="submit">查询</button>
+                          </div>
+                        </form>
+                        <table id="table" data-mobile-responsive="true" class="text-left">
+                        </table>
+                      </div>
+                      <!-- End Example Toolbar --> 
+                    </div>
+                    <div id="tab2" class="tab-pane"> </div>
+                    <div id="tab3" class="tab-pane"> </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--审核结果-->
+<div class="modal inmodal fade modaladd" id="audit-results" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="wrapper wrapper-content hper100">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="ibox">
+          <div class="ibox-content no-borders">
+            <label>
+            <h4>审核结果</h4>
+            </label>
+            <div class="pull-right">
+              <button type="button" class="btn btn-outline btn-info"><i class="fa fa-download"></i> 导出</button>
+              <button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-reply-all"></i> 返回</button>
+            </div>
+            <table class="table table-hover table-bordered m-t-xs">
+              <tbody>
+                <tr>
+                  <td>机房地址与所在地不符</td>
+                </tr>
+                <tr>
+                  <td>机房负责人身份证号码不合规</td>
+                </tr>
+                <tr>
+                  <td>机房IP地址段106.39.248.0~106.39.248.100与106.39.248.0~106.39.248.24、106.39.248.50~106.39.248.124冲突</td>
+                </tr>
+                <tr>
+                  <td>缺少链接信息</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--新增-->
+<div class="modal inmodal fade modaladd" id="add-modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="wrapper wrapper-content hper100">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="ibox ">
+          <div class="ibox-content no-borders">
+            <label>
+            <h4>新增</h4>
+            </label>
+            <div id="wizard">
+              <h1>机房主体信息</h1>
+              <div class="step-content">
+              	<div class="ibox border m-b-sm">
+                  <div class="ibox-title no-borders">
+                    <h5>机房信息</h5>
+                  </div>
+                  <div class="ibox-content">
+                    <form class="form-horizontal">
+                      <div class="form-group">
+                        <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>机房编号</label>
+                        <div class="col-md-4">
+                          <input type="text" class="form-control">
+                        </div>
+                      </div>
+                      <div class="hr-line-dashed"></div>
+                      <div class="form-group">
+                        <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>机房名称</label>
+                        <div class="col-md-4">
+                          <input type="text" class="form-control">
+                        </div>
+                      </div>
+                      <div class="hr-line-dashed"></div>
+                      <div class="form-group">
+                        <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>机房性质</label>
+                        <div class="col-md-4">
+                          <select class="form-control">
+                            <option value="请选择">请选择</option>
+                            <option value="租用" selected="">租用</option>
+                            <option value="自建">自建</option>
+                            <option value="其它">其它</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="hr-line-dashed"></div>
+                      <div class="form-group">
+                        <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>专线机房标识</label>
+                        <div class="col-md-4">
+                          <select class="form-control">
+                            <option value="请选择">请选择</option>
+                            <option value="专线">专线</option>
+                            <option value="非专线">非专线</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="hr-line-dashed"></div>
+                      <div class="form-group">
+                        <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>机房所在地</label>
+                        <div class="col-md-2">
+                          <select class="form-control">
+                            <option value="请选择">请选择</option>
+                            <option value="广州" selected="">广州</option>
+                            <option value="深圳">深圳</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2">
+                          <select class="form-control">
+                            <option value="请选择">请选择</option>
+                            <option value="天河" selected="">天河</option>
+                            <option value="荔湾">荔湾</option>
+                            <option value="白云">白云</option>
+                            <option value="越秀">越秀</option>
+                            <option value="海珠">海珠</option>
+                            <option value="番禺">番禺</option>
+                            <option value="花都">花都</option>
+                            <option value="从化">从化</option>
+                            <option value="增城">增城</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="hr-line-dashed"></div>
+                      <div class="form-group">
+                        <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>机房地址</label>
+                        <div class="col-md-4">
+                          <input type="text" class="form-control">
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="ibox border m-b-sm">
+                  <div class="ibox-title no-borders">
+                    <h5>联系人信息</h5>
+                  </div>
+                  <div class="ibox-content">
+                    <form class="form-horizontal">
+                      <div class="form-group">
+                        <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>网络信息安全责任人姓名</label>
+                        <div class="col-md-4">
+                          <input type="text" class="form-control">
+                        </div>
+                      </div>
+                      <div class="hr-line-dashed"></div>
+                      <div class="form-group">
+                        <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>网络信息安全责任人证件类型</label>
+                        <div class="col-md-4">
+                          <select class="form-control">
+                            <option value="请选择">请选择</option>
+                            <option value="身份证" selected="">身份证</option>
+                            <option value="军官证">军官证</option>
+                            <option value="护照">护照</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="hr-line-dashed"></div>
+                      <div class="form-group">
+                        <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>网络信息安全责任人证件号码</label>
+                        <div class="col-md-4">
+                          <input type="text" class="form-control">
+                        </div>
+                      </div>
+                      <div class="hr-line-dashed"></div>
+                      <div class="form-group">
+                        <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>网络信息安全责任人固定电话</label>
+                        <div class="col-md-4">
+                          <input type="text" class="form-control">
+                        </div>
+                      </div>
+                      <div class="hr-line-dashed"></div>
+                      <div class="form-group">
+                        <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>网络信息安全责任人移动电话</label>
+                        <div class="col-md-4">
+                          <input type="text" class="form-control">
+                        </div>
+                      </div>
+                      <div class="hr-line-dashed"></div>
+                      <div class="form-group">
+                        <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>网络信息安全责任人Email</label>
+                        <div class="col-md-4">
+                          <input type="text" class="form-control">
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <h1>IP信息</h1>
+              <div class="step-content">
+                <div class="ibox border m-b-sm">
+                  <div class="ibox-title no-borders">
+                    <h5><a class="addTitle"><i class="fa fa-plus m-r-xs"></i>新增</a></h5>
+                  </div>
+                  <div class="ibox-content">
+                    <div class="form-horizontal">
+                      <div class="row no-margins">
+                        <div class="col-sm-12">
+                          <div class="form-group">
+                            <label class="col-md-2 control-label p-n"><span class="text-danger">*&nbsp;</span>起始IP地址</label>
+                            <div class="col-md-3">
+                              <input type="text" class="form-control">
+                            </div>
+                            <label class="col-md-1 control-label p-n"><span class="text-danger">*&nbsp;</span>终止IP地址</label>
+                            <div class="col-md-3">
+                              <input type="text" class="form-control">
+                            </div>
+                            <div class="help-block m-b-n"> <a class="addGroup"><i class="fa fa-plus-circle"></i> 新增</a> </div>
+                          </div>
+                          <div class="hr-line-dashed"></div>
+                          <div class="form-group">
+                            <label class="col-md-2 control-label p-n"><span class="text-danger">*&nbsp;</span>来源单位</label>
+                            <div class="col-md-3">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                          <div class="hr-line-dashed"></div>
+                          <div class="form-group">
+                            <label class="col-md-2 control-label p-n"><span class="text-danger">*&nbsp;</span>分配单位</label>
+                            <div class="col-md-3">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                          <div class="hr-line-dashed"></div>
+                          <div class="form-group">
+                            <label class="col-md-2 control-label p-n"><span class="text-danger">*&nbsp;</span>分配使用日期</label>
+                            <div class="col-md-3">
+                              <input type="text" class="form-control" id="start1">
+                            </div>
+                          </div>
+                          <div class="hr-line-dashed"></div>
+                          <div class="form-group">
+                            <label class="col-md-2 control-label p-n"><span class="text-danger">*&nbsp;</span>IP地址使用方式</label>
+                            <div class="col-md-3">
+                              <select class="form-control" id="select2">
+                                <option value="请选择">请选择</option>
+                                <option value="静态">静态</option>
+                                <option value="动态">动态</option>
+                                <option value="保留">保留</option>
+                                <option value="专线">专线</option>
+                                <option value="云虚拟">云虚拟</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="hr-line-dashed"></div>
+                          <div class="form-group">
+                            <label class="col-md-2 control-label p-n">使用人的单位名称</label>
+                            <div class="col-md-3">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h1>机架信息</h1>
+              <div class="step-content">
+                <div class="ibox border m-b-sm">
+                  <div class="ibox-title no-borders">
+                    <h5><a class="addTitle"><i class="fa fa-plus m-r-xs"></i>新增</a></h5>
+                  </div>
+                  <div class="ibox-content">
+                    <div class="form-horizontal">
+                      <div class="row no-margins">
+                        <div class="col-sm-12">
+                          <div class="form-group">
+                            <label class="col-md-2 control-label p-n"><span class="text-danger">*&nbsp;</span>机架/机位名称</label>
+                            <div class="col-md-4">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                          <div class="hr-line-dashed"></div>
+                          <div class="form-group">
+                            <label class="col-md-2 control-label p-n"><span class="text-danger">*&nbsp;</span>分配状态</label>
+                            <div class="col-md-4">
+                              <select class="form-control">
+                                <option value="未分配" selected="">未分配</option>
+                                <option value="已分配">已分配</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="hr-line-dashed"></div>
+                          <div class="form-group">
+                            <label class="col-md-2 control-label p-n"><span class="text-danger">*&nbsp;</span>占用状态</label>
+                            <div class="col-md-4">
+                              <select class="form-control">
+                                <option value="未占用">未占用</option>
+                                <option value="已占用">已占用</option>
+                              </select>
+                            </div>
+                          </div>
+                           <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                            <label class="col-md-2 control-label p-n"><span class="text-danger">*&nbsp;</span>使用方式</label>
+                            <div class="col-md-4">
+                              <select class="form-control">
+                                <option value="请选择">请选择</option>
+                                <option value="自用">自用</option>
+                                <option value="租用">租用</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h1>链路信息</h1>
+              <div class="step-content">
+                <div class="ibox border m-b-sm">
+                  <div class="ibox-title no-borders">
+                    <h5><a class="addTitle"><i class="fa fa-plus m-r-xs"></i>新增</a></h5>
+                  </div>
+                  <div class="ibox-content">
+                    <div class="form-horizontal">
+                      <div class="row no-margins">
+                        <div class="col-sm-12">
+                          <div class="form-group">
+                            <label class="col-md-2 control-label p-n"><span class="text-danger">*&nbsp;</span>链路编号</label>
+                            <div class="col-md-4">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                          <div class="hr-line-dashed"></div>
+                          <div class="form-group">
+                            <label class="col-md-2 control-label p-n"><span class="text-danger">*&nbsp;</span>机房入口带宽(Mbps)</label>
+                            <div class="col-md-4">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                          <div class="hr-line-dashed"></div>
+                          <div class="form-group">
+                            <label class="col-md-2 control-label p-n"><span class="text-danger">*&nbsp;</span>机房出入口IP</label>
+                            <div class="col-md-4">
+                              <input type="text" class="form-control">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div th:include="/common/footer :: myfooter"></div>
+<div th:include="/common/footer :: #room"></div>
+
+
+</body>
+</html>

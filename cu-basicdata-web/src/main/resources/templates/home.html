@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <title>基础数据智能管理系统-首页</title>
+    <meta name="keywords" content="基础数据智能管理系统">
+    <meta name="description" content="基础数据智能管理系统">
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+    <link rel="shortcut icon" th:href="@{/static/img/profile_small.png}"/>
+    <link th:href="@{{path}/static/css/bootstrap.min14ed.css?v=3.3.6(path=${contextPath})}" rel="stylesheet" />
+    <link th:href="@{{path}/static/css/font-awesome.min93e3.css?v=4.4.0?v=3.3.6(path=${contextPath})}" rel="stylesheet" />
+    <link th:href="@{{path}/static/css/style.min862f.css?v=3.3.6(path=${contextPath})}" rel="stylesheet" />
+
+</head>
+
+<body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
+<div id="wrapper"><!-- #BeginLibraryItem "/Library/nav.lbi" -->
+    <!--左侧导航开始-->
+    <!--logo-->
+    <div class="nav-header">
+        <div class="dropdown profile-element"> <span><img alt="image" class="img-circle" src="/static/img/profile_small.png"></span> <a href=""> <span class="clear"><strong class="font-bold">基础数据智能管理系统</strong></span> <span class="clear">V1.0.0</span>  </a> </div>
+        <div class="logo-element">CU</div>
+    </div>
+    <!--logo 结束-->
+    <nav class="navbar-default navbar-static-side menubar-active" role="navigation">
+        <div class="nav-close"><i class="fa fa-times-circle"></i> </div>
+        <div class="sidebar-collapse">
+            <ul class="nav side-menu">
+                <li class="active" th:authorized="经营者管理"> <a href="#"> <i class="fa fa-folder"></i> <span class="nav-label">经营者管理</span> <span class="fa arrow"></span> </a>
+                    <ul class="nav nav-second-level">
+                        <li th:authorized="经营者信息"> <a class="J_menuItem" th:href="@{/idc/index}">经营者信息</a> </li>
+                    </ul>
+                </li>
+                <li th:authorized="机房信息上报管理"> <a href="#"> <i class="fa fa-folder"></i> <span class="nav-label">机房信息上报管理</span> <span class="fa arrow"></span> </a>
+                    <ul class="nav nav-second-level">
+                        <li th:authorized="机房主体上报信息"> <a class="J_menuItem" href="/rpt/house/index">机房主体上报信息</a> </li>
+                        <li th:authorized="机房IP上报信息"> <a class="J_menuItem" href="/rpt/houseip/index">机房IP上报信息</a> </li>
+                        <li th:authorized="机架上报信息"> <a class="J_menuItem" href="/rpt/houseframe/index">机架上报信息</a> </li>
+                        <li th:authorized="机房链路上报信息"> <a class="J_menuItem" href="/rpt/houselink/index">机房链路上报信息</a> </li>
+                    </ul>
+                </li>
+                <li th:authorized="用户信息上报管理"> <a href="#"> <i class="fa fa-folder"></i> <span class="nav-label">用户信息上报管理</span> <span class="fa arrow"></span> </a>
+                    <ul class="nav nav-second-level">
+                    	<li th:authorized="用户主体上报信息"> <a class="J_menuItem" href="/rptUser/userInfo/index">用户主体上报信息</a> </li>
+                        <li th:authorized="用户服务上报信息"> <a class="J_menuItem" href="/rptUser/userService/index">用户服务上报信息</a> </li>
+                        <li th:authorized="用户网络资源上报信息"> <a class="J_menuItem" href="/rptUser/userHH/index">用户网络资源上报信息</a> </li>
+                        <li th:authorized="虚拟主机上报信息"> <a class="J_menuItem" href="/rptUser/userVirtual/index">虚拟主机上报信息</a> </li>
+                        <!-- <li> <a class="J_menuItem" href="/rptUser/userIp/index">用户IP信息上报管理</a> </li> -->
+                        <li th:authorized="ISP用户上报过滤管理"> <a class="J_menuItem" th:href="@{/isp/index}">ISP用户上报过滤管理</a> </li>
+                    </ul>
+                </li>
+                <li th:authorized="机房信息预录入管理"> <a href="#"><i class="fa fa-folder"></i><span class="nav-label">机房信息预录入管理</span> <span class="fa arrow"></span> </a>
+                    <ul class="nav nav-second-level">
+                        <li th:authorized="机房主体信息录入"> <a class="J_menuItem" href="/houseinfo/index">机房主体信息录入</a> </li>
+                        <li th:authorized="IP信息录入"> <a class="J_menuItem" href="/houseinfo/houseIp">IP信息录入</a> </li>
+                        <li th:authorized="机架信息录入"> <a class="J_menuItem" href="/houseinfo/houseRack">机架信息录入</a> </li>
+                        <li th:authorized="机房链路录入"> <a class="J_menuItem" href="/houseLink/index">机房链路录入</a> </li>
+                    </ul>
+                </li>
+                <li th:authorized="用户信息预录入管理"> <a href="#"><i class="fa fa-folder"></i><span class="nav-label">用户信息预录入管理</span> <span class="fa arrow"></span> </a>
+                    <ul class="nav nav-second-level">
+                        <li th:authorized="用户主体信息录入"> <a class="J_menuItem" th:href="@{/user/index}">用户主体信息录入</a> </li>
+                        <li th:authorized="用户服务信息录入"> <a class="J_menuItem" href="/userservice/index">用户服务信息录入</a> </li>
+                        <li th:authorized="用户网络资源录入"> <a class="J_menuItem" href="/userbandwidth/index">用户网络资源录入</a> </li>
+                        <!-- <li> <a class="J_menuItem" href="/userIp/index">用户IP信息</a> </li> -->
+                        <li th:authorized="虚拟主机信息录入"> <a class="J_menuItem" href="/uservirtual/index">虚拟主机信息录入</a> </li>
+                    </ul>
+                </li>
+				<li th:authorized="系统配置"> <a href="#"><i class="fa fa-folder"></i><span class="nav-label">系统配置</span> <span class="fa arrow"></span> </a>
+                    <ul class="nav nav-second-level">
+                        <li th:authorized="地市码管理"> <a class="J_menuItem" href="/areaCode/index">地市码管理</a> </li>
+                        <li th:authorized="隶属单位管理"> <a class="J_menuItem" href="/subCity/index">隶属单位管理</a> </li>
+
+                    </ul>
+                </li>
+                <!--<li> <a href="#"> <i class="fa fa-folder"></i> <span class="nav-label">拨测资源管理</span> <span class="fa arrow"></span> </a>
+                   <ul class="nav nav-second-level">
+                       <li> <a class="J_menuItem" href="">拨测站点管理</a> </li>
+                   </ul>
+               </li>
+               <li> <a href="#"><i class="fa fa-folder"></i> <span class="nav-label">数据分析管理</span> <span class="fa arrow"></span> </a>
+                   <ul class="nav nav-second-level">
+                       <li><a class="J_menuItem" >活跃IP空闲统计</a> </li>
+                       <li><a class="J_menuItem" >端口访问统计</a> </li>
+                   </ul>
+               </li>-->
+
+            </ul>
+        </div>
+    </nav>
+    <!--左侧导航结束--><!-- #EndLibraryItem --><!--右侧部分开始-->
+    <div id="page-wrapper" class="gray-bg dashbard-1"><!-- #BeginLibraryItem "/Library/header.lbi" -->
+        <div class="row">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <i class="fa fa-bars navbar-minimalize minimalize-styl-2"></i>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li>欢迎您：<strong id="userName"></strong></li>
+                    <li><a></a> </li>  
+                </ul>
+            </nav>
+        </div>
+        <div class="row content-tabs">
+            <button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i> </button>
+            <nav class="page-tabs J_menuTabs">
+                <div class="page-tabs-content"> <a href="javascript:;" class="active J_menuTab" data-id="/index">首页</a> </div>
+            </nav>
+            <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i> </button>
+            <div class="btn-group roll-nav roll-right">
+                <button class="dropdown J_tabClose" data-toggle="dropdown">关闭操作 </button>
+                <ul role="menu" class="dropdown-menu dropdown-menu-right">
+                    <li class="J_tabShowActive"><a>定位当前选项卡</a> </li>
+                    <li class="divider"></li>
+                    <li class="J_tabCloseAll"><a>关闭全部选项卡</a> </li>
+                    <li class="J_tabCloseOther"><a>关闭其他选项卡</a> </li>
+                </ul>
+            </div>
+            <a th:href="@{/logout}" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a> </div>
+        <!-- #EndLibraryItem --><div class="row J_mainContent" id="content-main">
+            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="/index" frameborder="0" data-id="/index" seamless></iframe>
+        </div>
+    </div>
+    <!--右侧部分结束-->
+</div>
+
+<!--javascript加载 -->
+<div th:include="/common/footer :: myfooter"></div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $.ajax({
+            url: "/getLoginUser",
+            type: 'GET',
+            data:{},
+            dataType:"json",
+            success: function (data) {
+                $("#userName").html(data.userName);
+            },
+            error:function () {
+                $("#userName").html("admin");
+            }
+        });
+    });
+
+    //菜单栏的点击事件
+    $(".menubar>li").each(function(index, element) {
+        $(".menubar>li").eq(index).click(function() {
+            if($(this).hasClass("text-active")) {
+                $(this).siblings().removeClass("text-active");
+            } else {
+                $(this).addClass("text-active").siblings().removeClass("text-active")
+            };
+            //菜单栏与菜单栏内容的联动效果
+            $(".menubar-active .sidebar-collapse").eq(index).parent().show().siblings().hide();
+        });
+    });
+</script>
+</body>
+</html>

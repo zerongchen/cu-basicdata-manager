@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      >
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<link th:href="@{{path}/static/css/plugins/select2/select2.min.css(path=${contextPath})}" rel="stylesheet" />
+	<link th:href="@{{path}/static/css/bootstrap.min.css(path=${contextPath})}" rel="stylesheet" />
+	<link th:href="@{{path}/static/css/bootstrap.min14ed.css?v=3.3.6(path=${contextPath})}" rel="stylesheet" />
+	<link th:href="@{{path}/static/css/font-awesome.min93e3.css?v=4.4.0(path=${contextPath})}" rel="stylesheet" />
+	<link th:href="@{{path}/static/css/plugins/jqgrid/ui.jqgridffe4.css?0820(path=${contextPath})}" rel="stylesheet" />
+	<link th:href="@{{path}/static/css/plugins/bootstrap-table/bootstrap-table.min.css(path=${contextPath})}" rel="stylesheet" />
+
+	<link th:href="@{{path}/static/css/plugins/sweetalert/sweetalert.css(path=${contextPath})}" rel="stylesheet">
+
+	<link th:href="@{{path}/static/css/plugins/steps/jquery.steps.css(path=${contextPath})}" rel="stylesheet">
+	<link th:href="@{{path}/static/css/style.min862f.css?v=4.1.0(path=${contextPath})}" rel="stylesheet" />
+
+</head>
+<body>
+<div class="col-sm-12">
+        <div class="">
+                <div class="form-group m-r-sm">
+                    <label ></label>
+                    <select id="sel_menu1" multiple="multiple" class=" js-example-basic-multiple form-control">
+					  <option value="1">option1</option>
+					  <option value="2">option2</option>
+					  <option value="3">option3</option>
+					  <option value="4">option4</option>
+					</select>
+					
+					<div>
+						<label >your choice</label>
+						<div id="value1"></div>
+					</div>
+                </div>
+				
+				
+				 <div class="form-group m-r-sm">
+                    <label ></label>
+                    <select id="sel_menu2" class="form-control">
+					  <option value="1">option1</option>
+					  <option value="2">option2</option>
+					  <option value="3">option3</option>
+					  <option value="4">option4</option>
+					</select>
+                </div>
+
+				 <div class="form-group m-r-sm">
+                    <label ></label>
+                    <select id="sel_menu3" multiple="multiple" class="form-control">
+					</select>
+					<div>
+						<label >your choice</label>
+						<div id="value3"></div>
+					</div>
+                </div>
+			<div class="form-group">
+				<label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>隶属单位地市码</label>
+				<div class="col-md-4">
+					<select  id="houseMainArea" class="form-control selectpicker " multiple data-live-search="false">
+					</select>
+				</div>
+			</div>
+        </div>
+    </div>
+<div>
+	<div class="form-group">
+		<label class="col-md-4 control-label"><span class="text-danger">*&nbsp;</span>日期</label>
+		<div class="col-md-6">
+			<input  class="form-control" type="text" id="dateId">
+		</div>
+		<label class="col-md-4 control-label"><span class="text-danger">*&nbsp;</span>开始</label>
+		<div class="col-md-6">
+			<input placeholder="开始时间" type="text" class="form-control" id="start">
+		</div>
+		<label class="col-md-4 control-label"><span class="text-danger">*&nbsp;</span>结束</label>
+		<div class="col-md-6">
+			<input placeholder="结束时间" type="text" class="form-control" id="end">
+		</div>
+	</div>
+</div>
+<div class="col-sm-12">
+<div class="form-group m-r-sm">
+	<label >机房2</label>
+	<select id="sel_house" multiple="multiple" class="form-control">
+	</select>
+</div>
+<div class="form-group m-r-sm">
+	<label >单位</label>
+	<select id="sel_user" multiple="multiple" class="form-control">
+	</select>
+</div>
+	<div class="form-group m-r-sm">
+		<label >地区</label>
+		<select id="one" class="col-md-3 form-control"></select>
+		<select id="two" class="col-md-3 form-control"></select>
+		<select id="three"  class="col-md-3 form-control"></select>
+	</div>
+</div>
+</div>
+<!--javascript加载 -->
+<div th:include="/common/footer :: myfooter"></div>
+<!--<script th:src="@{{path}/static/js/plugins/layer/laydate/laydate.js(path=${contextPath})}"></script>-->
+<!--<script th:src="@{{path}/static/js/common/isms-component.js(path=${contextPath})}"></script>-->
+<!--<script th:src="@{{path}/static/js/common/isms-component-timepick.js(path=${contextPath})}"></script>-->
+<!--<script th:src="@{{path}/static/js/common/isms-component-areaselect.js(path=${contextPath})}"></script>-->
+<script th:src="@{{path}/static/js/demo/selecttest.js(path=${contextPath})}"></script>
+<script th:src="@{{path}/static/js/common/isms-component-richselect.js(path=${contextPath})}"></script>
+
+
+</body>
+</html>

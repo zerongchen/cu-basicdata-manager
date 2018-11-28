@@ -1,0 +1,136 @@
+{
+	"total": 10,
+	"rows": [
+		{
+			"name": "3801",
+			"star": "GD-FS-IDC",
+			"time": "专线",
+			"description": "佛山本地IDC中心",
+			"nature": "其他",
+			"location": "广东省-深圳市-福田区",
+			"user": "潘浩",
+			"status": "<span class='text-warning'>预审中</span>",
+			"review": "",
+			"updated": "2018-04-10 14:28:17",
+			"operating": "<a title='详情' class='m-r' data-toggle='modal' data-target='#details'><i class='fa fa-file-text-o fa-lg'></i></a><a data-toggle='modal' data-target='#add-modal' title='修改' class='m-r'><i class='fa fa-edit fa-lg'></i></a><a class='m-r demo2 'title='预审' class='m-r'><i class='fa fa-legal fa-lg'></i></a><a  class='demo4' title='删除'><i class='fa fa-close fa-lg'></i></a>"
+		},
+		{
+			"name": "3802",
+			"star": "GD-FS-IDC",
+			"time": "专线",
+			"description": "佛山本地IDC中心",
+			"nature": "其他",
+			"location": "广东省-深圳市-福田区",
+			"user": "潘浩",
+			"status": "<span class='text-text-muted'>未预审</span>",
+			"review": "",
+			"updated": "2018-04-10 14:28:17",
+			"operating": "<a href='#' title='详情' class='m-r'><i class='fa fa-file-text-o fa-lg'></i></a><a data-toggle='modal' data-target='#add-modal' title='修改' class='m-r'><i class='fa fa-edit fa-lg'></i></a><a class='m-r demo2 'title='预审' class='m-r'><i class='fa fa-legal fa-lg'></i></a><a  class='demo4' title='删除'><i class='fa fa-close fa-lg'></i></a>"
+		},
+		{
+			"name": "3803",
+			"star": "GD-FS-IDC",
+			"time": "专线",
+			"description": "佛山本地IDC中心",
+			"nature": "其他",
+			"location": "广东省-深圳市-福田区",
+			"user": "潘浩",
+			"status": "<span class='text-navy'>预审成功</span>",
+			"review": "",
+			"updated": "2018-04-10 14:28:17",
+			"operating": "<a href='#' title='详情' class='m-r'><i class='fa fa-file-text-o fa-lg'></i></a><a data-toggle='modal' data-target='#add-modal' title='修改' class='m-r'><i class='fa fa-edit fa-lg'></i></a><a class='m-r demo2 'title='预审' class='m-r'><i class='fa fa-legal fa-lg'></i></a><a  class='demo4' title='删除'><i class='fa fa-close fa-lg'></i></a>"
+		},
+		{
+			"name": "3804",
+			"star": "GD-FS-IDC",
+			"time": "专线",
+			"description": "佛山本地IDC中心",
+			"nature": "其他",
+			"location": "广东省-深圳市-福田区",
+			"user": "潘浩",
+			"status": "<span class='text-danger'>预审不通过</span>",
+			"review": "<a data-toggle='modal' data-target='#audit-results' class='m-r'>审核结果</a>",
+			"updated": "2018-04-10 14:28:17",
+			"operating": "<a href='#' title='详情' class='m-r'><i class='fa fa-file-text-o fa-lg'></i></a><a data-toggle='modal' data-target='#add-modal' title='修改' class='m-r'><i class='fa fa-edit fa-lg'></i></a><a href='#' title='刷新' class='m-r'><i class='fa fa-legal fa-lg'></i></a><a href='#' class='demo4' title='删除'><i class='fa fa-close fa-lg'></i></a>"
+		},
+		{
+			"name": "3805",
+			"star": "GD-FS-IDC",
+			"time": "专线",
+			"description": "佛山本地IDC中心",
+			"nature": "其他",
+			"location": "广东省-深圳市-福田区",
+			"user": "潘浩",
+			"status": "<span class='text-danger'>预审不通过</span>",
+			"review": "<a data-toggle='modal' data-target='#audit-results' class='m-r'>审核结果</a>",
+			"updated": "2018-04-10 14:28:17",
+			"operating": "<a href='#' title='详情' class='m-r'><i class='fa fa-file-text-o fa-lg'></i></a><a data-toggle='modal' data-target='#add-modal' title='修改' class='m-r'><i class='fa fa-edit fa-lg'></i></a><a href='#' title='刷新' class='m-r'><i class='fa fa-legal fa-lg'></i></a><a href='#' class='demo4' title='删除'><i class='fa fa-close fa-lg'></i></a>"
+		},
+		{
+			"name": "3806",
+			"star": "GD-FS-IDC",
+			"time": "专线",
+			"description": "佛山本地IDC中心",
+			"nature": "其他",
+			"location": "广东省-深圳市-福田区",
+			"user": "潘浩",
+			"status": "<span class='text-danger'>预审不通过</span>",
+			"review": "<a data-toggle='modal' data-target='#audit-results' class='m-r'>审核结果</a>",
+			"updated": "2018-04-10 14:28:17",
+			"operating": "<a href='#' title='详情' class='m-r'><i class='fa fa-file-text-o fa-lg'></i></a><a data-toggle='modal' data-target='#add-modal' title='修改' class='m-r'><i class='fa fa-edit fa-lg'></i></a><a href='#' title='刷新' class='m-r'><i class='fa fa-legal fa-lg'></i></a><a href='#' class='demo4' title='删除'><i class='fa fa-close fa-lg'></i></a>"
+		},
+		{
+			"name": "3807",
+			"star": "GD-FS-IDC",
+			"time": "专线",
+			"description": "佛山本地IDC中心",
+			"nature": "其他",
+			"location": "广东省-深圳市-福田区",
+			"user": "潘浩",
+			"status": "<span class='text-danger'>预审不通过</span>",
+			"review": "<a data-toggle='modal' data-target='#audit-results' class='m-r'>审核结果</a>",
+			"updated": "2018-04-10 14:28:17",
+			"operating": "<a href='#' title='详情' class='m-r'><i class='fa fa-file-text-o fa-lg'></i></a><a data-toggle='modal' data-target='#add-modal' title='修改' class='m-r'><i class='fa fa-edit fa-lg'></i></a><a href='#' title='刷新' class='m-r'><i class='fa fa-legal fa-lg'></i></a><a href='#' class='demo4' title='删除'><i class='fa fa-close fa-lg'></i></a>"
+		},
+		{
+			"name": "3808",
+			"star": "GD-FS-IDC",
+			"time": "专线",
+			"description": "佛山本地IDC中心",
+			"nature": "其他",
+			"location": "广东省-深圳市-福田区",
+			"user": "潘浩",
+			"status": "<span class='text-danger'>预审不通过</span>",
+			"review": "<a data-toggle='modal' data-target='#audit-results' class='m-r'>审核结果</a>",
+			"updated": "2018-04-10 14:28:17",
+			"operating": "<a href='#' title='详情' class='m-r'><i class='fa fa-file-text-o fa-lg'></i></a><a data-toggle='modal' data-target='#add-modal' title='修改' class='m-r'><i class='fa fa-edit fa-lg'></i></a><a href='#' title='刷新' class='m-r'><i class='fa fa-legal fa-lg'></i></a><a href='#' class='demo4' title='删除'><i class='fa fa-close fa-lg'></i></a>"
+		},
+		{
+			"name": "3809",
+			"star": "GD-FS-IDC",
+			"time": "专线",
+			"description": "佛山本地IDC中心",
+			"nature": "其他",
+			"location": "广东省-深圳市-福田区",
+			"user": "潘浩",
+			"status": "<span class='text-danger'>预审不通过</span>",
+			"review": "<a data-toggle='modal' data-target='#audit-results' class='m-r'>审核结果</a>",
+			"updated": "2018-04-10 14:28:17",
+			"operating": "<a href='#' title='详情' class='m-r'><i class='fa fa-file-text-o fa-lg'></i></a><a data-toggle='modal' data-target='#add-modal' title='修改' class='m-r'><i class='fa fa-edit fa-lg'></i></a><a href='#' title='刷新' class='m-r'><i class='fa fa-legal fa-lg'></i></a><a href='#' class='demo4' title='删除'><i class='fa fa-close fa-lg'></i></a>"
+		},
+		{
+			"name": "3810",
+			"star": "GD-FS-IDC",
+			"time": "专线",
+			"description": "佛山本地IDC中心",
+			"nature": "其他",
+			"location": "广东省-深圳市-福田区",
+			"user": "潘浩",
+			"status": "<span class='text-danger'>预审不通过</span>",
+			"review": "<a data-toggle='modal' data-target='#audit-results' class='m-r'>审核结果</a>",
+			"updated": "2018-04-10 14:28:17",
+			"operating": "<a href='#' title='详情' class='m-r'><i class='fa fa-file-text-o fa-lg'></i></a><a data-toggle='modal' data-target='#add-modal' title='修改' class='m-r'><i class='fa fa-edit fa-lg'></i></a><a href='#' title='刷新' class='m-r'><i class='fa fa-legal fa-lg'></i></a><a href='#' class='demo4' title='删除'><i class='fa fa-close fa-lg'></i></a>"
+		}
+
+	]
+}

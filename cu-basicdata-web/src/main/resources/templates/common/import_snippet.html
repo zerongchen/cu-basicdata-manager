@@ -1,0 +1,53 @@
+<!--导入-->
+<div th:fragment="import">
+    <div class="modal inmodal fade modaladd" id="upload" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="wrapper wrapper-content hper100">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="ibox">
+                        <div class="ibox-content no-borders">
+                            <label>
+                                <h4>导入</h4>
+                            </label>
+                            <form class="form-horizontal" id="commonImportForm">
+                                <input type="hidden" id="lastImportStatus" />
+
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group">
+                                    <label class="col-md-1 control-label">文件</label>
+                                    <div class="col-md-4" id="upLoad120">
+                                        <input type="file" id ="importFile" name="importFile" accept=".xls,.xlsm,.xlsx" class="form-control" required/>
+                                    </div>
+                                    <div class="help-block m-b-n"> <a id="exportTemplate">下载模板</a> </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group">
+                                    <label class="col-md-1 control-label">上次进度</label>
+                                    <div class="col-md-4">
+                                        <div class="progress m-b-n" id="importProcess">
+                                            <div style="width: 0.00%;" class="progress-bar">0.00%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group">
+                                    <label class="col-md-1 control-label">导入结果</label>
+                                    <div class="col-md-4 help-block m-b-n" id="errorFile"> 异常结果 </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group">
+
+                                    <div class="col-md-offset-1 col-md-6 ">
+                                        <button type="button" class="btn btn-outline btn-info m-r-sm" id="subImport"> 确定</button>
+                                        <button type="button" class="btn btn-outline btn-default" data-dismiss="modal"> 取消</button>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aotain.datamanagerweb.mapper.CommonMapper">
+
+    <select id="getHouseSelectInfo" parameterType="com.aotain.datamanagerweb.model.SelectInfoBean" resultType="com.aotain.datamanagerweb.model.SelectInfoBean">
+        select HOUSENAME title,HOUSEID value from IDC_ISMS_BASE_HOUSE where 1 = 1
+        <if test="houseName!=null and houseName!=''">
+            and houseName like concat('%',concat(#{houseName},'%'))
+        </if>
+        <if test="houseId!=null and houseId!=0">
+        	and houseId = #{houseId}
+        </if>
+    </select>
+    <select id="getIDCHouseSelectInfo" parameterType="com.aotain.datamanagerweb.model.SelectInfoBean" resultType="com.aotain.datamanagerweb.model.SelectInfoBean">
+        select HOUSENAME title,HOUSEID value from IDC_ISMS_BASE_HOUSE where  IDENTIFY=1
+        <if test="houseName!=null and houseName!=''">
+            and houseName like concat('%',concat(#{houseName},'%'))
+        </if>
+        <if test="houseId!=null and houseId!=0">
+            and houseId = #{houseId}
+        </if>
+    </select>
+    <select id="getUserSelectInfo" parameterType="com.aotain.datamanagerweb.model.SelectInfoBean" resultType="com.aotain.datamanagerweb.model.SelectInfoBean">
+        select USERID value , UNITNAME title from idc_isms_base_user where 1=1
+        <if test="unitName!=null and unitName!=''">
+            and unitName like concat('%',concat(#{unitName},'%'))
+        </if>
+        <if test="userId!=null and userId!=0">
+        	and userId = #{userId}
+        </if>
+        <if test="nature!=null and nature!=0">
+        	and nature = #{nature}
+        </if>
+        <if test="areaCodes != null and areaCodes != '' ">
+            AND split_areacode(SUBORDINATEUNIT_AREACODE, #{areaCodes}) = 1
+        </if>
+        <if test="authIdentities != null and authIdentities != '' ">
+            AND split_areacode(identify, #{authIdentities}) = 1
+        </if>
+        <if test="setMode!=null">
+        	and userId in (
+        		select userId from IDC_ISMS_BASE_USER_SERVICE where setmode=#{setMode} 
+        		<if test="areaCodes != null and areaCodes != '' ">
+	        		AND split_areacode(SUBORDINATEUNIT_AREACODE, #{areaCodes}) = 1
+	   			</if>
+        	)
+        </if>
+        and rownum &lt;11
+    </select>
+    <select id="getSubOrdArea" parameterType="List" resultType="com.aotain.datamanagerweb.model.SelectInfoBean">
+        select AREA_CODE value ,AREA_NAME title from DIC_SUBORDINATIONAREA
+        where 1=1
+        <if test="list!=null and list.size>0">
+          and   AREA_CODE in  <foreach collection="list" item="item" separator="," open="(" close=")">
+              #{item}
+        </foreach>
+        </if>
+    </select>
+
+    <select id="getUnitNameList" parameterType="com.aotain.datamanagerweb.model.SelectInfoBean" resultType="com.aotain.datamanagerweb.model.SelectInfoBean">
+        select USERID value ,UNITNAME title from IDC_ISMS_BASE_USER GROUP BY UNITNAME,USERID
+    </select>
+
+	<select id="getAreaCodeByHouseId" resultType="String">
+		select t.subordinateunit_areacode from idc_isms_base_house t where t.houseid =#{houseId}
+	</select>
+
+    <select id="getAreaCodeByUserId" resultType="String">
+		select t.subordinateunit_areacode from idc_isms_base_user t where t.userId =#{userId}
+	</select>
+	<select id="listUserFrame" parameterType="com.aotain.cu.serviceapi.dto.HouseFrameInformationDTO" resultType="com.aotain.cu.serviceapi.model.HouseUserFrameInformation">
+		select frameid frameId,unitname userName,idtype idType,idnumber idNumber,id id from idc_isms_base_user_frame
+		where 1=1 
+		<if test="frameId !=null">
+		and frameid = #{frameId}
+		</if>
+	</select>
+	<select id="getUserNames" resultType="com.aotain.datamanagerweb.model.BaseUserInfo" parameterType="com.aotain.cu.serviceapi.model.BaseModel">
+        SELECT unitname as unitName FROM IDC_ISMS_BASE_USER WHERE 1 = 1
+        <if test="areaCodes != null and areaCodes != '' ">
+            AND split_areacode(SUBORDINATEUNIT_AREACODE, #{areaCodes}) = 1
+        </if>
+        <if test="authIdentities != null and authIdentities != '' ">
+            AND split_areacode(identify, #{authIdentities}) = 1
+        </if>
+        <if test="userName!=null and userName!=''">
+            AND unitname like '%'||#{userName}||'%'
+        </if>
+    </select>
+</mapper>

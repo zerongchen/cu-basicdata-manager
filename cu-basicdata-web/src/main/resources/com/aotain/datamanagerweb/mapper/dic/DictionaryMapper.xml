@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aotain.datamanagerweb.mapper.dic.DictionaryMapper">
+
+    <resultMap id="ResultModelDto" type="com.aotain.datamanagerweb.dto.dic.AreaModelDTO">
+    
+        <collection property="provinceArr" ofType="com.aotain.datamanagerweb.dto.dic.AreaModel" column="1" select="getProvinceArr"/>
+        <collection property="cityArr" ofType="com.aotain.datamanagerweb.dto.dic.AreaModel" column="1" select="getCityArr"/>
+        <collection property="countyArr" ofType="com.aotain.datamanagerweb.dto.dic.AreaModel" column="1" select="getCountyArr"/>
+        
+    </resultMap>
+    
+    <select id="getAreaData" resultMap="ResultModelDto">
+        SELECT 1 from dual
+    </select>
+    
+    <select id="getProvinceArr" resultType="com.aotain.datamanagerweb.dto.dic.AreaModel">
+        SELECT CODE as code,PARENTCODE as parentCode , MC as mc,POSTCODE as postCode,AREACODE as areaCode,SFYX as flag,BZ as build
+        FROM IDC_JCDM_XZQYDM t WHERE CODELEVEL = 1 ORDER BY CODE ASC
+    </select>
+    <select id="getCityArr" resultType="com.aotain.datamanagerweb.dto.dic.AreaModel">
+        SELECT CODE as code,PARENTCODE as parentCode , MC as mc,POSTCODE as postCode,AREACODE as areaCode,SFYX as flag
+        FROM IDC_JCDM_XZQYDM t WHERE CODELEVEL = 2 ORDER BY CODE ASC
+    </select>
+    <select id="getCountyArr" resultType="com.aotain.datamanagerweb.dto.dic.AreaModel">
+        SELECT CODE as code,PARENTCODE as parentCode , MC as mc,POSTCODE as postCode,AREACODE as areaCode,SFYX as flag
+        FROM IDC_JCDM_XZQYDM t WHERE CODELEVEL = 3 ORDER BY CODE ASC
+    </select>
+    
+    <select id="getRule" resultType="com.aotain.datamanagerweb.dto.dic.JyGzModel">
+        SELECT TYPE as type, SUBTYPE as subType,PARAM as param ,REMARK as remark
+        FROM IDC_JCDM_JYGZ
+        where TYPE=1
+    </select>
+
+    <select id="getBalxArr"  resultType="com.aotain.datamanagerweb.dto.dic.BaseCode">
+        select ID id,MC mc from IDC_JCDM_BASX ORDER BY ID ASC
+    </select>
+
+    <select id="getDllxArr"  resultType="com.aotain.datamanagerweb.dto.dic.BaseCode">
+        select ID id,MC mc from IDC_JCDM_DLLX ORDER BY ID ASC
+    </select>
+
+    <select id="getDwsxArr"  resultType="com.aotain.datamanagerweb.dto.dic.BaseCode">
+        select ID id,MC mc from IDC_JCDM_DWSX ORDER BY ID ASC
+    </select>
+
+    <select id="getFwnrArr"  resultType="com.aotain.datamanagerweb.dto.dic.BaseCode">
+        select ID id,MC mc from IDC_JCDM_FWNR where fl!=0 ORDER BY ID ASC
+    </select>
+
+    <select id="getGzlxArr"  resultType="com.aotain.datamanagerweb.dto.dic.BaseCode">
+        select ID id,MC mc from IDC_JCDM_GZLX ORDER BY ID ASC
+    </select>
+
+    <select id="getJfxzArr"  resultType="com.aotain.datamanagerweb.dto.dic.BaseCode">
+        select ID id,MC mc from IDC_JCDM_JFXZ ORDER BY ID ASC
+    </select>
+
+    <select id="getJrfsArr"  resultType="com.aotain.datamanagerweb.dto.dic.BaseCode">
+        select ID id,MC mc from IDC_JCDM_JRFS ORDER BY ID ASC
+    </select>
+
+    <select id="getWfwgqkArr"  resultType="com.aotain.datamanagerweb.dto.dic.BaseCode">
+        select ID id,MC mc from IDC_JCDM_WFWGQK ORDER BY ID ASC
+    </select>
+
+    <select id="getZjlxArr"  resultType="com.aotain.datamanagerweb.dto.dic.BaseCode">
+        select ID id,MC mc from IDC_JCDM_ZJLX ORDER BY ID ASC
+    </select>
+
+    <select id="getWzbalxArr"  resultType="com.aotain.datamanagerweb.dto.dic.BaseCode">
+        select ID id,MC mc from idc_jcdm_wzbalx ORDER BY ID ASC
+    </select>
+
+    <select id="getIpdzsyfsArr"  resultType="com.aotain.datamanagerweb.dto.dic.BaseCode">
+        select ID id,MC mc from IDC_JCDM_IPDZSYFS ORDER BY ID ASC
+    </select>
+	<select id="getYhbsArr"  resultType="com.aotain.datamanagerweb.dto.dic.BaseCode">
+        select ID id,MC mc from IDC_JCDM_YHBS ORDER BY ID ASC
+    </select>
+
+    <sql id="baseSql">
+        ID AS id,CODE AS code,PARENTCODE AS parentCode,MC as mc,BZ AS bz,
+        SFYX AS sfyx,CODELEVEL AS codeLevel,POSTCODE AS postCode,AREACODE AS areaCode
+    </sql>
+
+    <select id="getXzqydmCodeByCode"  resultType="com.aotain.cu.serviceapi.model.IdcJcdmXzqydm" parameterType="string">
+        select
+        <include refid="baseSql"/>
+        FROM IDC_JCDM_XZQYDM
+        WHERE CODE = #{code}
+    </select>
+
+    <select id="getXzqydmCodeByMC"  resultType="com.aotain.cu.serviceapi.model.IdcJcdmXzqydm"
+            parameterType="com.aotain.cu.serviceapi.model.IdcJcdmXzqydm" useCache="true">
+        select
+        <include refid="baseSql"/>
+        FROM IDC_JCDM_XZQYDM
+        WHERE MC = #{mc}
+        <if test=" parentCode != null">
+            AND PARENTCODE = #{parentCode}
+        </if>
+    </select>
+
+    <select id="getDeployProvinceCodeByCode"  resultType="com.aotain.cu.serviceapi.model.IdcJcdmXzqydm" useCache="true">
+        select
+        <include refid="baseSql"/>
+        FROM IDC_JCDM_XZQYDM
+        WHERE SFYX = 1
+    </select>
+
+    
+    <select id="getAreaCodeList"  resultType="com.aotain.datamanagerweb.dto.dic.AreaModel" parameterType="com.aotain.datamanagerweb.dto.dic.AreaModel">
+        select
+        <include refid="baseSql"/>
+        FROM IDC_JCDM_XZQYDM
+       WHERE 1=1 
+       <if test="parentCode!=null ">
+          AND parentCode =#{parentCode} or code=#{parentCode}
+        </if> 
+       <if test="code!=null and code!='' and isCascade==null">
+          AND code LIKE '%'||#{code}||'%' 
+        </if>
+        <if test="mc!=null and mc!=''">
+          AND mc LIKE '%'||#{mc}||'%'
+        </if>
+        <if test="postCode!=null and postCode!=''">
+          AND postcode LIKE '%'||#{postCode}||'%'
+        </if>
+        <if test="codeLevel!=null">
+          AND codeLevel =#{codeLevel}
+        </if>
+        ORDER  BY id asc
+    </select>
+    
+    <insert id="insertXZQYDM" parameterType="com.aotain.datamanagerweb.dto.dic.AreaModel">
+    	insert into idc_jcdm_xzqydm
+         (id, code, parentcode, mc, bz, sfyx, codelevel, postcode, areacode)
+          values
+          ((select max(id)+1 from idc_jcdm_xzqydm), #{code}, #{parentCode}, #{mc}, '', '', #{codeLevel}, #{postCode}, '')
+    </insert>
+    
+    <update id="updateXZQYDMById" parameterType="com.aotain.datamanagerweb.dto.dic.AreaModel">
+    	update idc_jcdm_xzqydm
+    	<set>
+    		<if test="code!=null and code!=''">
+    		  code =#{code},
+    		</if>
+    		<if test="mc!=null and mc!=''">
+    		  mc =#{mc},
+    		</if>
+    		<if test="postCode!=null and postCode!=''">
+    		  postCode =#{postCode},
+    		</if>
+    	</set>
+    	where id=#{id}
+    </update>
+    
+    <delete id="deleteXZQYDMById" parameterType="long">
+    	delete from idc_jcdm_xzqydm where id =#{id}
+    </delete>
+
+	<select id="findCountByCode" parameterType="com.aotain.datamanagerweb.dto.dic.AreaModel" resultType="int">
+		 select count(1) from idc_jcdm_xzqydm where code=#{code}
+		 <if test="id!=null">
+		 	and id!=#{id}
+		 </if>
+	</select>
+	
+	<update id="emptyProvince">
+		update idc_jcdm_xzqydm set sfyx=0 
+	</update>
+	
+	<update id="setPronvice" parameterType="long">
+		update idc_jcdm_xzqydm set sfyx=1 where code=#{code}
+	</update>
+	
+	<select id="getChinaAraList" resultType="com.aotain.datamanagerweb.model.ChinaArea" parameterType="com.aotain.datamanagerweb.model.ChinaArea">
+		select t.id areaId,t.area_code areaCode,t.area_name areaName from DIC_SUBORDINATIONAREA t
+		where 1=1 
+		<if test="areaCode!=null and areaCode!=''">
+			and area_code like '%'||#{areaCode}||'%'
+		</if>
+		<if test="areaName!=null and areaName!=''">
+			and area_Name like '%'||#{areaName}||'%'
+		</if>
+	</select>
+	
+	<insert id="insertChinaArea" parameterType="com.aotain.datamanagerweb.model.ChinaArea">
+		<selectKey keyProperty="areaId" resultType="long" order="BEFORE">
+            SELECT SEQ_DIC_SUBORDINATIONAREA.Nextval as areaId from DUAL
+        </selectKey>
+		insert into DIC_SUBORDINATIONAREA
+ 		(id,area_code, area_name)
+		values
+ 		(#{areaId},#{areaCode}, #{areaName})
+	</insert>
+	
+	<update id="updateChinaArea" parameterType="com.aotain.datamanagerweb.model.ChinaArea">
+		UPDATE DIC_SUBORDINATIONAREA 
+		SET AREA_CODE=#{areaCode},AREA_NAME=#{areaName}
+		where AREA_CODE=#{preCode}
+	</update>
+	
+	<select id="finChinaAreaCountByCode" parameterType="com.aotain.datamanagerweb.model.ChinaArea" resultType="int">
+		select count(1) from DIC_SUBORDINATIONAREA where area_code=#{areaCode}
+		<if test="preCode!=null and preCode!=''">
+			and area_code!=#{preCode}
+		</if>
+	</select>
+	<delete id="deleteChinaAreaByCode" parameterType="long">
+		delete from DIC_SUBORDINATIONAREA where area_code=#{code}
+	</delete>
+	
+	<select id="finChinaAreaCountByName" parameterType="com.aotain.datamanagerweb.model.ChinaArea" resultType="int">
+		select count(1) from DIC_SUBORDINATIONAREA where area_name=#{areaName}
+		<if test="preCode!=null and preCode!=''">
+			and area_code!=#{preCode}
+		</if>
+	</select>
+	
+	<select id="getAreaTreeList"  resultType="com.aotain.datamanagerweb.dto.dic.AreaModel" parameterType="com.aotain.datamanagerweb.dto.dic.AreaModel">
+        select
+        <include refid="baseSql"/>
+        FROM IDC_JCDM_XZQYDM
+       WHERE 1=1 
+       <if test="parentCode!=null ">
+          AND parentCode =#{parentCode}
+        </if> 
+       <if test="code!=null and code!='' and isCascade==null">
+          AND code LIKE '%'||#{code}||'%' 
+        </if>
+        <if test="mc!=null and mc!=''">
+          AND mc LIKE '%'||#{mc}||'%'
+        </if>
+        <if test="postCode!=null and postCode!=''">
+          AND postcode LIKE '%'||#{postCode}||'%'
+        </if>
+        <if test="codeLevel!=null">
+          AND codeLevel =#{codeLevel}
+        </if>
+        ORDER  BY id asc
+    </select>
+	
+	<select id="findCountByMCandParentCode" parameterType="com.aotain.datamanagerweb.dto.dic.AreaModel" resultType="int">
+		 select count(1) from idc_jcdm_xzqydm where parentCode=#{parentCode} and mc =#{mc}
+		 <if test="id!=null">
+		 	and id!=#{id}
+		 </if>
+	</select>
+</mapper>

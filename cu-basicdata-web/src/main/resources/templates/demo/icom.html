@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head th:include="/common/header :: myheader" th:with="title=''">
+</head>
+
+<body>
+    <h3>Isms Component 组件测试</h3>
+    <button id="btn_01">1.组件核心JS：功能测试</button>
+    <button id="btn_02">2.组件插件JS：功能测试</button>
+    <button id="btn_03">3.组件插件JS：调用核心JS功能</button>
+    <button id="btn_04">4.组件插件JS：静态功能函数测试</button>
+    <button id="btn_05">5.组件插件JS：调用其它JS功能</button>
+    <button id="btn_06">6.组件插件JS：权限js测试</button>
+
+    <div th:include="/common/footer :: myfooter"></div>
+    <script th:inline="javascript">
+        $(document).ready(function(){
+            $("#btn_01").click(function(){
+                icom.cutils.demo("组件插件JS：调用核心JS功能");
+            });
+            $("#btn_02").click(function(){
+                var rsel = icom.rsel.createRichSelect(2,'组件插件JS：功能测试');
+                rsel.demo1();
+            });
+            $("#btn_03").click(function(){
+                var rsel = icom.rsel.createRichSelect(3,'组件插件JS：调用核心JS功能');
+                rsel.demo2('组件插件JS：调用核心JS功能');
+            });
+            $("#btn_04").click(function(){
+                var rsel = icom.rsel.createRichSelect(4,'组件插件JS：静态功能函数测试');
+                icom.rsel.sayHello(rsel);
+            });
+            $("#btn_05").click(function(){
+                var rsel = icom.rsel.createRichSelect(5,'组件插件JS：调用其它JS功能');
+                rsel.demo3();
+            });
+            $("#btn_06").click(function(){
+                icom.auth.demo();
+            });
+        });
+    </script>
+</body>
+</html>

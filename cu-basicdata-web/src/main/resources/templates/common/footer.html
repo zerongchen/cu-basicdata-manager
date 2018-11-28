@@ -1,0 +1,132 @@
+<div th:fragment="myfooter">
+
+
+
+    <script th:src="@{{path}/static/js/jquery.min.js?v=2.1.4(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/bootstrap.min.js?v=3.3.6(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/plugins/metisMenu/jquery.metisMenu.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/plugins/slimscroll/jquery.slimscroll.min.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/plugins/layer/layer.min.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/hplus.min.js?v=4.1.0(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/contabs.min.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/plugins/pace/pace.min.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/plugins/select2/select2.min.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/plugins/select2/zh-CN.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/plugins/bootstrap-table/bootstrap-table.min.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js(path=${contextPath})}"></script>
+    <!--<script th:src="@{{path}/static/js/demo/bootstrap-table-demo.min.js(path=${contextPath})}"></script>-->
+
+    <script th:src="@{{path}/static/js/content.min.js?v=1.0.0(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/jquery-ui-1.10.4.min.js(path=${contextPath})}"></script>
+
+    <script th:src="@{{path}/static/js/plugins/validate/jquery.validate.min.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/plugins/validate/messages_zh.min.js(path=${contextPath})}"></script>
+
+    <!--弹窗-->
+    <script th:src="@{{path}/static/js/plugins/sweetalert/sweetalert.min.js(path=${contextPath})}"></script>
+    <!--input文件上传样式-->
+    <script th:src="@{{path}/static/js/plugins/prettyfile/bootstrap-prettyfile.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/plugins/staps/jquery.steps.min.js(path=${contextPath})}"></script>
+
+    <!--自定义公共-->
+    <script th:src="@{{path}/static/js/plugins/chosen/chosen.jquery.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/plugins/chosen/init.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/plugins/layer/laydate/laydate.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/dic/areaCode.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/dic/jcdmCode.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/dic/jygzCode.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/common/common_select.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/common/common_fuc.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/common/common_tab.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/common/isms-component.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/common/isms-component-richselect.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/common/isms-component-timepick.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/common/isms-component-areaselect.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/common/isms-component-validate.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/common/isms-component-authority.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/common/String.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/common/AjaxValidator.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/common/file-handle.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/ajaxfileupload.js(path=${contextPath})}"></script>
+
+
+
+
+
+</div>
+<!--   自定义js     -->
+<!--   用户登录     -->
+<div id = 'login'>
+    <script th:src="@{{path}/static/js/login.js(path=${contextPath})}"></script>
+
+</div>
+
+<!--   机房管理     -->
+<div id = 'room'>
+    <script th:src="@{{path}/static/js/hoursmag/room/room.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/common/table_hover.js(path=${contextPath})}"></script>
+</div>
+
+<!-- 机房主体信息-->
+<div id="houseInfo">
+    <script th:src="@{{path}/static/js/plugins/suggest/bootstrap-suggest.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/houseinfo/house_main.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/common/table_hover.js(path=${contextPath})}"></script>
+</div>
+
+<!-- 机房链路信息-->
+<div id="houseLink">
+    <script th:src="@{{path}/static/js/houseinfo/house_link.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/common/table_hover.js(path=${contextPath})}"></script>
+</div>
+
+<!-- 用户主体信息-->
+<div id="userInfo">
+    <script th:src="@{{path}/static/js/userinfo/user_main.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/common/table_hover.js(path=${contextPath})}"></script>
+
+</div>
+
+
+<!-- 用户服务信息-->
+<div id="userservice">
+    <script th:src="@{{path}/static/js/userinfo/user_service.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/common/table_hover.js(path=${contextPath})}"></script>
+</div>
+
+<!-- 用户网络资源信息-->
+<div id="userbandwidth">
+    <script th:src="@{{path}/static/js/userinfo/user_bandwidth.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/common/table_hover.js(path=${contextPath})}"></script>
+</div>
+
+<!--上报机房IP信息-->
+<div id="rpthouuseip">
+    <script th:src="@{{path}/static/js/rpthouse/houseip.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/common/table_hover.js(path=${contextPath})}"></script>
+</div>
+
+<!--上报机房机架信息-->
+<div id="rpthouuseframe">
+    <script th:src="@{{path}/static/js/rpthouse/houseframe.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/common/table_hover.js(path=${contextPath})}"></script>
+</div>
+
+<!--上报机房链路信息-->
+<div id="rpthouuselink">
+    <script th:src="@{{path}/static/js/rpthouse/houselink.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/common/table_hover.js(path=${contextPath})}"></script>
+</div>
+
+<!-- 用户虚拟机信息-->
+<div id="userVirtual">
+    <script th:src="@{{path}/static/js/userinfo/user_virtual.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/common/table_hover.js(path=${contextPath})}"></script>
+</div>
+
+<!-- ispfilter-->
+<div id="ispfilter">
+    <script th:src="@{{path}/static/js/bootstrap-switch.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/rptisp/isp.js(path=${contextPath})}"></script>
+    <script th:src="@{{path}/static/js/common/table_hover.js(path=${contextPath})}"></script>
+</div>

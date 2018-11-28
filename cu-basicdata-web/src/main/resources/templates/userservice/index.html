@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header :: myheader"></head>
+<body class="gray-bg">
+<!-- 查询条件-->
+<div class="row wrapper border-bottom white-bg page-heading">
+<div class="col-sm-12">
+  <div th:if="${session.ROLE_PRE_USER_SERVICE_QUERY}" class="text-right">
+    <form id="indexSearch" class="form-inline">
+      <div class="form-group m-r-sm" style="clear: both">
+        <label>单位名称</label>
+        <input type="text" class="form-control" name="unitName"/>
+      </div>
+      <div class="form-group m-r-sm">
+        <label>服务内容</label>
+        <select  class="form-control" id="searchContent" name="serviceContent">
+        </select>
+      </div>
+      <div class="form-group m-r-sm">
+        <label>处理状态</label>
+        <select class="form-control" name="dealFlag">
+          <option value="">请选择</option>
+          <option value="0">未上报</option>
+          <option value="1">已上报</option>
+        </select>
+      </div>
+      <div class="form-group m-r-sm">
+        <label>操作类型</label>
+        <select class="form-control" name="czlx">
+          <option value="">请选择</option>
+          <option value="1">新增</option>
+          <option value="2">变更</option>
+          <option value="3">删除</option>
+        </select>
+      </div>
+      <div class="checkbox">
+        <button  class="btn btn-primary" type="button" id="serviceIndexSearch">查询</button>
+        <button class="btn btn-outline btn-link" type="button" onClick="showsearch()">更多条件查询</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="row m-t m-r-none m-l onoffswitch-checkbox prompt-search">
+  <div class="col-sm-12 p-trbl">
+    <div class="text-left">
+      <form class="form-inline">
+        <div class="form-group m-r-sm">
+          <label>接入方式</label>
+          <select class="form-control" id="setmode">
+          </select>
+        </div>
+        <div class="form-group m-r-sm">
+          <label>业务类型</label>
+          <select class="form-control" id="business">
+            <option value="">请选择</option>
+            <option value="1">IDC业务</option>
+            <option value="2">ISP业务</option>
+          </select>
+        </div>
+        <div class="form-group m-r-sm">
+          <label>服务域名</label>
+         <input type="text" id="domainName">
+        </div>
+        <div class="form-group m-r-sm">
+          <label>更新时间</label>
+          <input type="text" class="form-control" id="start">
+          <label>至</label>
+          <input type="text" class="form-control" id="end">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox ">
+        <div class="ibox-content">
+          <div class="row">
+            <div class="col-sm-12">
+              <!-- Example Toolbar -->
+              <div class="example-wrap text-right">
+                <div class="example">
+                  <div class="hidden-xs" id="commonButton" role="group">
+                    <button th:if="${session.ROLE_PRE_USER_SERVICE_ADD}" type="button" class="btn btn-outline btn-info m-l-xs" data-toggle="modal" data-target="#add-modal" id="serviceAddBt"> <i class="fa fa-plus" aria-hidden="true"></i> 新增</button>
+                    <button th:if="${session.ROLE_PRE_USE_SERVICE_BATCH_DEL}" type="button" class="btn btn-outline btn-danger demo4"  id="index_delete"> <i class="fa fa-trash-o" aria-hidden="true"></i> 批量删除</button>
+                  	<input th:value="${session.ROLE_PRE_USER_SERVICE_UPDATE}" type="hidden" id="updateRole">
+                    <input th:value="${session.ROLE_PRE_USER_SERVICE_DEL}" type="hidden" id="delRole">
+                  </div>
+                  <table th:if="${session.ROLE_PRE_USER_SERVICE_QUERY}" id="indexTable" data-mobile-responsive="true" class="text-left">
+                  </table>
+                </div>
+              </div>
+              <!-- End Example Toolbar -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--新增-->
+<div class="modal inmodal fade modaladd" id="myModaladd" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="wrapper wrapper-content hper100">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="ibox">
+          <input type="hidden" id="idPlus" value="1">
+          <div class="ibox-content no-borders">
+            <label>
+              <h4>新增信息</h4>
+            </label>
+            <div class="ibox border m-b-sm">
+              <!-- <div class="ibox-title no-borders">
+                <h5><a class="addTitle" id="sserviceTitle">新增</a></h5>
+              </div> -->
+              <div class="ibox-content">
+
+                <div class="form-horizontal">
+                  <form class="form-horizontal" id="serviceForm">
+                    <div class="row no-margins">
+                      <div class="col-sm-12">
+                        <div class="form-group">
+                          <label class="col-md-2 control-label p-n"><span class="text-danger">*&nbsp;</span>单位名称</label>
+                          <input type="hidden" id="serviceId" name="serviceId">
+                          <div class="col-md-4" id="unitNameSel">
+                          </div>
+                          <label id="unitName_error" name="unitName_error" class="control-label p-n error"></label>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                          <label class="col-md-2 control-label p-n"><span class="text-danger">*&nbsp;</span>应用服务类型</label>
+                          <div class="col-md-4">
+                            <select class="form-control" name="serviceType" id="serviceTypes" required>
+                              <option value="">请选择</option>
+                              <option value="0">内部应用</option>
+                              <option value="1">电信业务/对外应用服务</option>
+                            </select>
+                          </div>
+                          <label id="serviceType_error" name="serviceType_error" class="control-label p-n error"></label>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                          <label class="col-md-2 control-label p-n"><span class="text-danger">*&nbsp;</span>服务内容</label>
+                          <div class="col-md-8">
+                            <ul class="tag-list p-l-n" id="serviceContent" name="serviceContent" >
+                              <li><a>即时通信</a></li>
+                              <li><a>搜索引擎</a></li>
+                              <li><a>综合门户</a></li>
+                              <li><a>网上邮局</a></li>
+                              <li><a>网络新闻</a></li>
+                              <li><a>博客/个人空间</a></li>
+                              <li><a>网络广告</a></li>
+                              <li class="active"><a>网络游戏</a></li>
+                              <li><a>单位门户网站</a></li>
+                              <li><a>购物</a></li>
+                              <li><a>支付</a></li>
+                              <li><a>网上银行</a></li>
+                              <li><a>炒股/股票基金</a></li>
+                            </ul>
+                          </div>
+                          <label id="serviceContent_error" name="serviceContent_error" class="control-label p-n error"></label>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                          <label class="col-md-2 control-label p-n"><span class="text-danger">*&nbsp;</span>接入方式</label>
+                          <div class="col-md-4">
+                            <select  class="form-control" name="setmode" id="setmodeAdd" required>
+                            </select>
+                          </div>
+                          <label name="tips" class="control-label p-n"><span class="text-center center-block" title="接入方式选择虚拟主机时，虚拟主机信息录入模块信息必填"><i class="fa fa-question-circle" aria-hidden="true"></i></span></label>
+                          <label id="setmode_error" name="setmode_error" class="control-label p-n error"></label>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                          <label class="col-md-2 control-label p-n"><span class="text-danger">*&nbsp;</span>业务类型</label>
+                          <div class="col-md-4">
+                            <select  class="form-control" name="business" id="businesss" required>
+                              <option value="">请选择</option>
+                              <option value="1">IDC业务</option>
+                              <option value="2">ISP业务</option>
+                            </select>
+                          </div>
+                          <label id="business_error"  name="business_error" class="control-label p-n error"></label>
+                        </div>
+                         <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                          <label class="col-md-2 control-label  p-n"><span class="text-danger">*&nbsp;</span>隶属单位</label>
+                          <div class="col-md-4" id="parentAreaCode">
+
+                          </div>
+                          <label name="tips" class="control-label p-n"><span class="text-center center-block" title="该信息所隶属的管理区域或部门，支持多选"><i class="fa fa-question-circle" aria-hidden="true"></i></span></label>
+                          <label id="areaCode_error" name="areaCode_error" class="col-md-10 p-l-lg col-md-offset-2 text-danger"></label>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                          <label class="col-md-2 control-label p-n">备案类型</label>
+                          <div class="col-md-4">
+                            <select  class="form-control" id="regType" name="regType">
+
+                            </select>
+                          </div>
+                          <label id="regType_error" name="regType_error" class="control-label p-n error"></label>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                          <label class="col-md-2 control-label p-n">备案号/许可证号</label>
+                          <div class="col-md-4">
+                            <input type="text" class="form-control" name="registerId" id="registerId" autocomplete="off" maxlength="64">
+                          </div>
+                          <label id="registerId_error" name="registerId_error" class="control-label p-n error"></label>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                          <label class="col-md-2 control-label p-n">服务域名</label>
+                          <div class="col-md-4">
+                            <input type="text" class="form-control" name="domainList" id="domain1" autocomplete="off" maxlength="128">
+                          </div>
+                          <div class="col-md-1 help-block m-t-none"> <a class="addGroup"><i class="fa fa-plus-circle"></i> 新增</a></div>
+                            <label id="domain1_error" class="control-label p-n error"></label>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="form-group m-t clear">
+              <div class="col-md-offset-2 col-md-3">
+                <button id="btnAdd" type="button" class="btn btn-primary save">提交</button>
+                <a id="btnCancel" class="m-l-sm" data-dismiss="modal">取消</a> </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--javascript加载 -->
+<div th:include="/common/footer :: myfooter"></div>
+<div th:include="/common/footer :: #userservice"></div>
+</body>
+</html>

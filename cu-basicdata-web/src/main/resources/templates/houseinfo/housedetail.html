@@ -1,0 +1,216 @@
+<div th:fragment="housedetail">
+    <div class="modal inmodal fade modaladd" id="details" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="wrapper wrapper-content hper100">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="ibox">
+                        <div class="ibox-content no-borders">
+                            <label>
+                                <h4>机房详情</h4>
+                            </label>
+                            <div class="pull-right m-b-xs">
+                                <input type="hidden" id="detailHouseId"></input>
+                                <button type="button" class="btn btn-outline  btn-primary" id="detail_approv"><i class="fa fa-legal"></i> 预审</button>
+                                <button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-reply-all"></i> 返回上一级</button>
+                            </div>
+                            <div class="ibox border m-b-sm">
+                                <div class="ibox-title no-borders">
+                                    <h5>机房主体信息</h5>
+                                </div>
+                                <div class="ibox-content">
+                                    <form class="form-horizontal">
+                                        <div class="row no-margins">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label p-n">机房编号：</label>
+                                                    <div class="col-md-8 control-label text-left "><spand id="houseNo_dt"></spand></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label p-n" >机房名称：</label>
+                                                    <div class="col-md-9 control-label text-left " id="houseName_dt"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label p-n">机房性质：</label>
+                                                    <div class="col-md-9 control-label text-left "> <spand id="houseType_dt"></spand> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row no-margins">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label p-n">专线机房标识：</label>
+                                                    <div class="col-md-8 control-label text-left "> <spand id="identity_dt"></spand> </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label p-n">机房所在地：</label>
+                                                    <div class="col-md-9 control-label text-left "> <spand id="houseAddress_dt"></spand></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label p-n">处理状态：</label>
+                                                    <div class="col-md-9 control-label text-left "> <spand id="dealFlag_dt"></spand> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row no-margins">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label p-n">责任人姓名：</label>
+                                                    <div class="col-md-8 control-label text-left "><spand id="houseOfficerName_dt"></spand></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label p-n" >证件类型：</label>
+                                                    <div class="col-md-9 control-label text-left " id="houseOfficerIdType_dt"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label p-n">证件号码：</label>
+                                                    <div class="col-md-9 control-label text-left "> <spand id="houseOfficerId_dt"></spand> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row no-margins">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-4 control-label p-n">固定电话：</label>
+                                                    <div class="col-md-8 control-label text-left "><spand id="houseOfficerTelephone_dt"></spand></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label p-n" >移动电话：</label>
+                                                    <div class="col-md-9 control-label text-left " id="houseOfficerMobile_dt"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label p-n">Email：</label>
+                                                    <div class="col-md-9 control-label text-left "> <spand id="houseOfficerEmail_dt"></spand> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="tabs-container">
+                                        <ul class="nav nav-tabs" id="tabHead">
+                                            <li class="active"> <a data-toggle="tab" href="#tab1">IP信息管理</a> </li>
+                                            <li> <a data-toggle="tab" href="#tab2">机架信息管理</a> </li>
+                                            <li> <a data-toggle="tab" href="#tab3">链路管理</a> </li>
+                                        </ul>
+                                        <div class="tab-content ">
+                                            <div id="tab1" class="tab-pane active">
+                                                <!-- Example Toolbar -->
+                                                <div class="example-wrap text-right">
+                                                    <form id="detailIpForm" class="form-inline m-t-sm">
+                                                        <div class="form-group m-r-md">
+                                                            <label>IP地址：</label>
+                                                            <input type="text" name="startIP" class="form-control" />
+                                                        </div>
+                                                        <div class="form-group m-r-md">
+                                                            <label>使用人单位名称：</label>
+                                                            <input type="text" name="userName" class="form-control" />
+                                                        </div>
+                                                        <div class="form-group m-r-sm">
+                                                            <label>处理状态</label>
+                                                            <select class="form-control" name="dealFlag">
+                                                                <option value="">请选择</option>
+                                                                <option value="0">未上报</option>
+                                                                <option value="1">已上报</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="checkbox">
+                                                            <button class="btn btn-primary" type="button" id="detail_IP">查询</button>
+                                                        </div>
+                                                    </form>
+                                                    <table id="ipTableDetial" data-mobile-responsive="true" class="text-left"></table>
+                                                </div>
+                                                <!-- End Example Toolbar -->
+                                            </div>
+                                            <div id="tab2" class="tab-pane">
+                                                <div class="example-wrap text-right">
+                                                    <form id="frameDetailForm" class="form-inline m-t-sm">
+                                                        <div class="form-group m-r-md">
+                                                            <label>机架名称：</label>
+                                                            <input type="text" class="form-control" name="frameName"/>
+                                                        </div>
+                                                        <div class="form-group m-r-md">
+                                                            <label>单位名称：</label>
+                                                            <input type="text" class="form-control" name="unitName"/>
+                                                        </div>
+                                                        <div class="form-group m-r-md">
+                                                            <label>分配状态：</label>
+                                                            <select class="form-control" name="distribution">
+                                                                <option value="">请选择</option>
+                                                                <option value="1">未分配</option>
+                                                                <option value="2">已分配</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group m-r-md">
+                                                            <label>上报状态：</label>
+                                                            <select class="form-control" name="dealFlag">
+                                                                <option value="">请选择</option>
+                                                                <option value="0">未上报</option>
+                                                                <option value="1">已上报</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="checkbox">
+                                                            <button class="btn btn-primary" type="button" id="detail_frame">查询</button>
+                                                        </div>
+                                                    </form>
+                                                    <table id="frameTableDetail" data-mobile-responsive="true" class="text-left">
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div id="tab3" class="tab-pane">
+                                                <div class="example-wrap text-right">
+                                                    <form id="linkDetailForm" class="form-inline m-t-sm">
+                                                        <div class="form-group m-r-md">
+                                                            <label>链路编号：</label>
+                                                            <input type="text" class="form-control" name="linkNo" />
+                                                        </div>
+                                                        <div class="form-group m-r-md">
+                                                            <label>机房出入口IP：</label>
+                                                            <input type="text" class="form-control" name="gatewayIP"/>
+                                                        </div>
+                                                        <div class="form-group m-r-md">
+                                                            <label>上报状态：</label>
+                                                            <select class="form-control" name="dealFlag">
+                                                                <option value="">请选择</option>
+                                                                <option value="0">未上报</option>
+                                                                <option value="1">已上报</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="checkbox">
+                                                            <button class="btn btn-primary" type="button" id="detail_link">查询</button>
+                                                        </div>
+                                                    </form>
+                                                    <table id="linkTableDetail" data-mobile-responsive="true" class="text-left">
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

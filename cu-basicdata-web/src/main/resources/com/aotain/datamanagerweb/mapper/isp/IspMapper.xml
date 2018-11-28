@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aotain.datamanagerweb.mapper.isp.IspMapper">
+
+    
+    <select id="query" parameterType="com.aotain.cu.serviceapi.model.IspModel" resultType="com.aotain.cu.serviceapi.model.IspModel">
+        select ID as id,UNIT_NAME as unitName , FILTER_MODE as filterMode from RPT_ISP_USER_FILTER where 1=1
+        <if test="unitName!=null and unitName!='' ">
+            and UNIT_NAME like concat('%',concat(#{unitName},'%'))
+        </if>
+        <if test="filterMode!=null">
+            AND FILTER_MODE=#{filterMode}
+        </if>
+        
+    </select>
+    
+    <insert id="banthImport" parameterType="java.util.List" useGeneratedKeys="false" >
+    
+        insert into RPT_ISP_USER_FILTER(ID, UNIT_NAME, FILTER_MODE)
+        select SEQ_RPT_ISP_USER_FILTER.NEXTVAL ,A.* from (
+        <foreach collection="list" item="item" index="index" separator="union all" >
+            select
+            #{item.unitName},
+            #{item.filterMode}
+            from dual
+        </foreach>) A
+    </insert>
+    
+    <update id="banthActive" parameterType="List">
+      UPDATE RPT_ISP_USER_FILTER SET FILTER_MODE=1
+      WHERE ID IN
+      <foreach collection="list" item="item" separator="," open="(" close=")">
+          #{item}
+      </foreach>
+    
+    </update>
+    
+    <update id="banthInActive" parameterType="List">
+        UPDATE RPT_ISP_USER_FILTER SET FILTER_MODE=2
+        WHERE ID IN
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    
+    </update>
+    
+    <delete id="banthdelete" parameterType="List">
+        DELETE FROM RPT_ISP_USER_FILTER
+        WHERE ID IN
+        <foreach collection="list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+    </delete>
+	
+</mapper>

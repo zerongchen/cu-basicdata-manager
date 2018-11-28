@@ -1,0 +1,207 @@
+<div th:fragment="userModify">
+    <div class="modal inmodal fade modaladd" id="modify-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="wrapper wrapper-content hper100">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="ibox ">
+                        <div class="ibox-content no-borders">
+                            <label>
+                                <input type="hidden" value="1">
+                                <h4>修改</h4>
+                            </label>
+                                <div class="step-content">
+                                <form id="userMianModifyForm">
+                                    <div class="ibox border m-b-sm">
+                                        <div class="ibox-title no-borders">
+                                            <h5>用户信息</h5>
+                                        </div>
+                                        <input type="hidden" name="userId">
+                                        <div class="ibox-content">
+                                            <div class="form-horizontal">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>用户属性</label>
+                                                    <div class="col-md-4">
+                                                        <select class="form-control"  v-model="nature" id="modify_natureId" name="nature" required>
+                                                            <option value="" >请选择</option>
+                                                            <option value="1">提供互联网应用服务的用户</option>
+                                                            <option value="2">其他用户</option>
+                                                        </select>
+                                                    </div>
+                                                    <label id="nature_error" class="control-label p-n error"></label>
+                                                </div>
+                                                <div id="forOtherUser">
+                                                    <div class="hr-line-dashed "></div>
+                                                    <div class="form-group otherUser" >
+                                                        <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>服务开通时间</label>
+                                                        <div class="col-md-4">
+                                                            <input type="text" class="form-control" v-model="serviceRegTime" id="modify_serviceRegTimeId" name="serviceRegTime" required>
+                                                        </div>
+                                                        <label id="modify_serviceRegTime_error" class="control-label p-n error"></label>
+                                                    </div>
+                                                </div>
+                                                <div class="hr-line-dashed"></div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>用户标识</label>
+                                                    <div class="col-md-6">
+                                                        <input th:if="${identifyId1}==1" type="checkbox" value="1" v-model="identify" id="modify_identifyId1" name="identify" required>
+                                                        <label th:if="${identifyId1}==1" for="modify_identifyId1">IDC用户</label>&nbsp;&nbsp;
+                                                        <input th:if="${identifyId2}==2" type="checkbox" value="2" v-model="identify" id="modify_identifyId1" name="identify" required>
+                                                        <label th:if="${identifyId2}==2" for="modify_identifyId2">ISP用户</label>&nbsp;&nbsp;
+                                                        <input th:if="${identifyId3}==3" type="checkbox" value="3" v-model="identify" id="modify_identifyId1" name="identify" required>
+                                                        <label th:if="${identifyId3}==3" for="modify_identifyId3">IDC/ISP用户</label>&nbsp;&nbsp;
+                                                        <input th:if="${identifyId4}==4" type="checkbox" value="4" v-model="identify" id="modify_identifyId1" name="identify" required>
+                                                        <label th:if="${identifyId4}==4" for="modify_identifyId4">CDN用户</label>&nbsp;&nbsp;
+                                                        <input th:if="${identifyId5}==5" type="checkbox" value="5" v-model="identify" id="modify_identifyId2" name="identify" required>
+                                                        <label th:if="${identifyId5}==5" for="modify_identifyId5">专线用户</label>
+                                                    </div>
+                                                    <label id="identify_error" class="control-label p-n error"></label>
+                                                </div>
+                                                <div class="hr-line-dashed"></div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>单位名称</label>
+                                                    <div class="col-md-4">
+                                                        <input type="text" class="form-control" id="modify_unitNameId" v-model="unitName"  name="unitName" required>
+                                                    </div>
+                                                    <label id="modify_unitName_error" class="control-label p-n error"></label>
+                                                </div>
+
+                                                <div class="hr-line-dashed"></div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>单位属性</label>
+                                                    <div class="col-md-4">
+                                                        <select class="form-control" id="modify_unitNatureId" v-model="unitNature" name="unitNature" required>
+                                                        </select>
+                                                    </div>
+                                                    <label id="modify_unitNature_error" class="control-label p-n error"></label>
+                                                </div>
+                                                <div class="hr-line-dashed"></div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>证件类型</label>
+                                                    <div class="col-md-4">
+                                                        <select class="form-control" id="modify_idTypeId" v-model="idType" name="idType" required>
+                                                        </select>
+                                                    </div>
+                                                    <label id="modify_idType_error" class="control-label p-n error"></label>
+                                                </div>
+                                                <div class="hr-line-dashed"></div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>证件号码</label>
+                                                    <div class="col-md-4">
+                                                        <input type="text" class="form-control" id="modify_idNumberId" v-model="idNumber"  name="idNumber" required>
+                                                    </div>
+                                                    <label id="modify_idNumber_error" class="control-label p-n error"></label>
+                                                </div>
+                                                <div class="hr-line-dashed"></div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>单位归属地</label>
+                                                    <div class="col-md-2">
+                                                        <select class="form-control" v-model="unitAddressProvinceCode" id="modify_addProvince"></select>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <select class="form-control" v-model="unitAddressCityCode" id="modify_addCity"></select>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <select class="form-control" v-model="unitAddressAreaCode" id="modify_addCounty" ></select>
+                                                    </div>
+                                                    <label id="modify_unitAddressProvinceCode_error" class="control-label p-n error"></label>
+                                                    <label id="modify_unitAddressCityCode_error" class="control-label p-n error"></label>
+                                                    <label id="modify_unitAddressAreaCode_error" class="control-label p-n error"></label>
+                                                </div>
+                                                <div class="hr-line-dashed"></div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>单位地址</label>
+                                                    <div class="col-md-4">
+                                                        <input type="text" class="form-control" id="modify_unitAddressId" name="unitAddress" v-model="unitAddress" required>
+                                                    </div>
+                                                    <label id="modify_unitAddress_error" class="control-label p-n error"></label>
+                                                </div>
+                                                <div class="hr-line-dashed"></div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>隶属单位地市码</label>
+                                                    <div class="col-md-4" id="areaDiv">
+                                                    </div>
+                                                    <label id="modify_areaCode_error" name="modify_areaCode_error" class="control-label p-n error"></label>
+                                                </div>
+                                                <div class="hr-line-dashed"></div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>注册时间</label>
+                                                    <div class="col-md-4">
+                                                        <input type="text" class="form-control" v-model="registeTime" id="modify_registeTimeId" name="registeTime" required>
+                                                    </div>
+                                                    <label id="modify_registeTime_error" class="control-label p-n error"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ibox border m-b-sm">
+                                        <div class="ibox-title no-borders">
+                                            <h5>联系人信息</h5>
+                                        </div>
+                                        <div class="ibox-content">
+                                            <div class="form-horizontal">
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>联系人</label>
+                                                    <div class="col-md-4">
+                                                        <input type="text" class="form-control" id="modify_officerNameId" v-model="officerName"  name="officerName" required>
+                                                    </div>
+                                                    <label id="modify_officerName_error" class="control-label p-n error"></label>
+                                                </div>
+                                                <div class="hr-line-dashed"></div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>联系人证件类型</label>
+                                                    <div class="col-md-4">
+                                                        <select class="form-control" id="modify_officerIdTypeId" v-model="officerIdType" name="officerIdType" required>
+                                                        </select>
+                                                    </div>
+                                                    <label id="modify_officerIdType_error" class="control-label p-n error"></label>
+                                                </div>
+                                                <div class="hr-line-dashed"></div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>联系人证件号码</label>
+                                                    <div class="col-md-4">
+                                                        <input type="text" class="form-control" id="modify_officerIdId"  v-model="officerId" name="officerId" required>
+                                                    </div>
+                                                    <label id="modify_officerId_error" class="control-label p-n error"></label>
+                                                </div>
+                                                <div class="hr-line-dashed"></div>
+                                                <div class="form-group" id="phoneAddMes">
+                                                    <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>联系人固定电话</label>
+                                                    <div class="col-md-4">
+                                                        <input type="isPhone" class="form-control" id="modify_officerTelphoneId" v-model="officerTelphone" name="officerTelphone" required>
+                                                    </div>
+                                                    <label id="modify_officerTelphone_error" class="control-label p-n error"></label>
+                                                </div>
+                                                <div class="hr-line-dashed"></div>
+                                                <div class="form-group" id="mobliePhoneAddMes">
+                                                    <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>联系人移动电话</label>
+                                                    <div class="col-md-4">
+                                                        <input type="isMobile" class="form-control" id="modify_officerMobileId" v-model="officerMobile" name="officerMobile" required>
+                                                    </div>
+                                                    <label id="modify_officerMobile_error" class="control-label p-n error" required></label>
+                                                </div>
+                                                <div class="hr-line-dashed"></div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>联系人Email</label>
+                                                    <div class="col-md-4">
+                                                        <input type="email" class="form-control" id="modify_officerEmailId" v-model="officerEmail" name="officerEmail" required>
+                                                    </div>
+                                                    <label id="modify_officerEmail_error" class="control-label p-n error"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group m-t clear">
+                                        <div class="col-md-offset-2 col-md-3">
+                                            <button type="button" id="modify_prevalidate" class="btn btn-primary save">预审</button>
+                                            <a id="btnCancel" class="m-l-sm" data-dismiss="modal">取消</a> </div>
+                                    </div>
+                                </form>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

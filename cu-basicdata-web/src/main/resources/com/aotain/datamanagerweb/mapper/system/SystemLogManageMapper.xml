@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aotain.datamanagerweb.mapper.system.SystemLogManageMapper">
+
+    <insert id="insertActionLog" parameterType="com.aotain.datamanagerweb.model.SystemActionLog" >
+		<selectKey keyProperty="actionLogId" resultType="java.lang.Long" order="BEFORE">
+			SELECT SEQ_IDC_SYSTEM_OPERATE_LOGID.NEXTVAL as actionLogId FROM dual
+		</selectKey>
+		insert into IDC_ISMS_SYSTEM_ACTION_LOG
+			  (ACTION_LOG_ID, USER_ID, USERNAME, REALNAME, IP_ADDRESS, MODULE, ACTION_TYPE, ACTION_TIME, DESCRIPTION,USER_LEVEL,SUBORDINATEUNIT_AREACODE)
+		values
+			  (#{actionLogId}, #{userId}, #{username,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, #{ipAddress,jdbcType=VARCHAR}, #{module,jdbcType=VARCHAR}, #{actionType},
+			   #{actionTime}, #{description,jdbcType=VARCHAR},#{userLevel},#{areaCode,jdbcType=VARCHAR})
+	</insert>
+	
+	<insert id="insertDataLog" parameterType="com.aotain.datamanagerweb.model.DataLog">
+		<selectKey keyProperty="id" resultType="java.lang.Long" order="BEFORE">
+			SELECT SEQ_IDC_SYSTEM_DATA_LOGID.NEXTVAL as id FROM dual
+		</selectKey>
+		insert into IDC_ISMS_SYSTEM_DATA_LOG
+		(ID, USERNAME, REALNAME, IP_ADDRESS, MODULE_NAME, ACTION_TYPE, ACTION_TIME,
+		<if test="dataId != null">
+			DATA_ID,
+		</if>
+		<if test="dataJson != null">
+			DATA_JSON,
+		</if>
+		DESCRIPTION,USER_LEVEL,USER_ID,SUBORDINATEUNIT_AREACODE)
+		values (#{id}, #{username}, #{realname}, #{ipAddress}, #{moduleName}, #{actionType}, #{actionTime},
+		<if test="dataJson != null">
+			#{dataJson},
+		</if>
+		#{description},#{userLevel},#{userId},#{areaCode,jdbcType=VARCHAR})
+	</insert>
+
+	<insert id="insertLoginLog" parameterType="com.aotain.cu.serviceapi.dto.SystemLoginLogDTO">
+		<selectKey keyProperty="logId" resultType="java.lang.Long" order="BEFORE">
+			SELECT SEQ_IDC_SYSTEM_LOGIN_LOGID.NEXTVAL as logId FROM dual
+		</selectKey>
+		insert into IDC_ISMS_SYSTEM_LOGIN_LOG
+		(LOGID, DLYH, DLYHXM, DLIP, HOSTNAME,czlx,USER_LEVEL,USER_ID,SUBORDINATEUNIT_AREACODE)
+		values (#{logId}, #{user}, #{userName}, #{loginIp}, #{hostName},#{type,jdbcType=INTEGER},#{userLevel,jdbcType=INTEGER},#{userId,jdbcType=INTEGER},#{areaCode,jdbcType=VARCHAR})
+	</insert>
+
+</mapper>
+

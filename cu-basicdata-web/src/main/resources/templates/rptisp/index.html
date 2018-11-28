@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header :: myheader">
+
+</head>
+<body class="gray-bg">
+<!-- 查询条件-->
+<div class="row wrapper border-bottom white-bg page-heading">
+<div class="col-sm-12">
+  <div th:if="${session.ROLE_PRE_USER_QUERY}" class="text-right">
+    <form id="indexSearch" class="form-inline">
+      <div class="form-group m-r-sm" style="clear: both">
+        <label>单位名称</label>
+        <input type="text" class="form-control" id="unitName" name="unitName"/>
+      </div>
+      <div class="form-group m-r-sm">
+          <label>处理状态</label>
+          <select class="form-control" id="filterMode" name="filterMode">
+            <option value="">请选择</option>
+            <option value="1">已过滤</option>
+            <option value="2">未过滤</option>
+          </select>
+       </div>
+
+      <div th:authorized="ROLE_ISP_QUERY" class="checkbox">
+        <button  class="btn btn-primary" type="button" id="IspSearch">查询</button>
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox ">
+        <div class="ibox-content">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="example-wrap text-right">
+                <div class="example">
+                  <div class="hidden-xs" id="commonButton" role="group">
+                    <button th:authorized="ROLE_ISP_IMPORT" type="button" class="btn btn-outline btn-info m-l-xs" data-toggle="modal" data-target="#upload" id="uploadIsp" > <i class="fa fa-upload" aria-hidden="true"></i> 导入</button>
+                    <button th:authorized="ROLE_ISP_ACTIVE" type="button" class="btn btn-outline btn-info" id="banthActive"> <i class="fa fa-paste" aria-hidden="true"></i> 批量过滤</button>
+                    <button th:authorized="ROLE_ISP_INACTIVE" type="button" class="btn btn-outline btn-danger " id="banthInActive"> <i class="fa fa-paste" aria-hidden="true"></i> 批量取消</button>
+                    <button th:authorized="ROLE_ISP_DELETE" type="button" class="btn btn-outline btn-danger " id="banthDelete"> <i class="fa fa-trash-o" aria-hidden="true"></i> 批量删除</button>
+                    <input th:value="${session.ROLE_ISP_ACTIVE}" type="hidden" id="updateActive">
+                    <input th:value="${session.ROLE_ISP_INACTIVE}" type="hidden" id="updateInActive">
+                  </div>
+                  <table th:authorized="ROLE_ISP_QUERY" id="ispTable" data-mobile-responsive="true" class="text-left">
+                  </table>
+                </div>
+              </div>
+              <!-- End Example Toolbar -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal inmodal fade modaladd" id="upload" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="wrapper wrapper-content hper100">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="ibox">
+          <div class="ibox-content no-borders">
+            <label>
+              <h4>导入</h4>
+            </label>
+            <form class="form-horizontal" id="ispImportForm">
+              <div class="hr-line-dashed"></div>
+              <div class="form-group">
+                <label class="col-md-1 control-label">文件</label>
+                <div class="col-md-4">
+                  <input type="file" id ="importFile" name="importFile" accept=".xls,.xlsm,.xlsx" class="form-control" required/>
+                </div>
+                <div th:authorized="ROLE_ISP_DOWNLOAD_TEMPLATE" class="help-block m-b-n"> <a id="exportTemplate">下载模板</a> </div>
+              </div>
+              <div class="hr-line-dashed"></div>
+              <div th:authorized="ROLE_ISP_DOWNLOAD_ERROR_FILE" class="form-group">
+                <label class="col-md-1 control-label">导入结果</label>
+                <div class="col-md-4 help-block m-b-n" id="errorFile"> 异常结果 </div>
+              </div>
+              <div class="hr-line-dashed"></div>
+              <div class="form-group">
+                <div class="col-md-offset-1 col-md-6 ">
+                  <button type="button" class="btn btn-outline btn-info m-r-sm" id="importIsp"> 确定</button>
+                  <button type="button" class="btn btn-outline btn-default" data-dismiss="modal"> 取消</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--javascript加载 -->
+<div th:include="/common/footer :: myfooter"></div>
+<div th:include="/common/footer :: #ispfilter"></div>
+
+</body>
+</html>

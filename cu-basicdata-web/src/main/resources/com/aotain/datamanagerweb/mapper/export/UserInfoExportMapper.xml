@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aotain.datamanagerweb.mapper.export.UserInfoExportMapper">
+	
+	<resultMap id="USERBaseResultMap" type="com.aotain.datamanagerweb.model.dataexport.UserInforExport">
+		<id column="USERID" jdbcType="DECIMAL" property="userId" />
+		<result column="NATURE" jdbcType="DECIMAL" property="nature" />
+		<result column="UNITNAME" jdbcType="VARCHAR" property="unitName" />
+		<result column="IDTYPE" jdbcType="DECIMAL" property="idType" />
+		<result column="IDNUMBER" jdbcType="VARCHAR" property="idNumber" />
+		<result column="OFFICER_EMAIL" jdbcType="VARCHAR" property="officerEmail" />
+		<result column="OFFICER_MOBILE" jdbcType="VARCHAR" property="officerMobile" />
+		<result column="OFFICER_TEL" jdbcType="VARCHAR" property="officerTelphone" />
+		<result column="OFFICER_ID" jdbcType="VARCHAR" property="officerId" />
+		<result column="OFFICER_IDTYPE" jdbcType="DECIMAL" property="officerIdType" />
+		<result column="OFFICER_NAME" jdbcType="VARCHAR" property="officerName" />
+		<result column="UNITADD" jdbcType="VARCHAR" property="unitAddress" />
+		<result column="REGISTERTIME" jdbcType="VARCHAR" property="registeTime" />
+		<result column="SERVERREGISTERTIME" jdbcType="VARCHAR" property="serviceRegTime" />
+		<result column="UNITADDPROVINCEC" jdbcType="VARCHAR" property="unitAddressProvinceCode" />
+		<result column="UNITADDPROVINCEN" jdbcType="VARCHAR" property="unitAddressProvinceName" />
+		<result column="UNITADDCITYC" jdbcType="VARCHAR" property="unitAddressCityCode" />
+		<result column="UNITADDCITYN" jdbcType="VARCHAR" property="unitAddressCityName" />
+		<result column="UNITADDAREAC" jdbcType="VARCHAR" property="unitAddressAreaCode" />
+		<result column="UNITADDAREAN" jdbcType="VARCHAR" property="unitAddressAreaName" />
+		<result column="SUBORDINATEUNIT_AREACODE" jdbcType="VARCHAR" property="areaCodeStr" />
+		<result column="IDENTIFY" jdbcType="VARCHAR" property="identify" />
+		<result column="areaCodes" property="areaCodes" />
+		<result column="authIdentities"  property="authIdentities" />
+		<result column="authHouses"  property="authHouses" />
+		<collection property="bandwidthList" column="{userId=USERID,areaCodes=areaCodes,authIdentities=authIdentities,authHouses=authHouses}" select="getBandWidth"></collection>
+		<collection property="serviceList" column="{userId=USERID,areaCodes=areaCodes,authIdentities=authIdentities}" select="getUserService"></collection>
+		<collection property="virtualList" column="{userId=USERID,areaCodes=areaCodes,authIdentities=authIdentities,authHouses=authHouses}" select="getVirtualList"></collection>
+	</resultMap>
+	
+	<resultMap id="BaseBandResultMap" type="com.aotain.datamanagerweb.model.dataexport.UserHhInforExport">
+		<id column="HHID" jdbcType="DECIMAL" property="hhId" />
+		<result column="USERID" jdbcType="DECIMAL" property="userId" />
+		<result column="UNITNAME" jdbcType="VARCHAR" property="unitName" />
+		<result column="HOUSENAME" jdbcType="VARCHAR" property="houseName" />
+		<result column="DISTRIBUTETIME" jdbcType="VARCHAR" property="distributeTime" />
+		<result column="BANDWIDTH" jdbcType="DECIMAL" property="bandWidth" />
+		<result column="SUBORDINATEUNIT_AREACODE" jdbcType="VARCHAR" property="areaCodeStr" />
+	</resultMap>
+	
+	<resultMap id="BaseServiceResultMap" type="com.aotain.datamanagerweb.model.dataexport.UserServiceInforExport">
+		<id column="SERVICEID" jdbcType="DECIMAL" property="serviceId" />
+		<result column="USERID" jdbcType="DECIMAL" property="userId" />
+		<result column="UNITNAME" jdbcType="VARCHAR" property="unitName" />
+		<result column="SERVICECONTENT" jdbcType="VARCHAR" property="serviceContent" />
+		<result column="REGID" jdbcType="VARCHAR" property="regId" />
+		<result column="SETMODE" jdbcType="DECIMAL" property="setMode" />
+		<result column="SERVICETYPE" jdbcType="DECIMAL" property="serviceType" />
+		<result column="BUSINESS" jdbcType="DECIMAL" property="business" />
+		<result column="REGTYPE" jdbcType="DECIMAL" property="regType" />
+		<result column="SUBORDINATEUNIT_AREACODE" jdbcType="VARCHAR" property="areaCodeStr" />
+		<collection property="domains" column="{serviceId=SERVICEID,userId=USERID}" select="getDomains"></collection>
+	</resultMap>
+	
+	<resultMap id="BaseVirtualResultMap" type="com.aotain.datamanagerweb.model.dataexport.UserVirtualExport">
+		<id column="VIRTUALID" jdbcType="DECIMAL" property="virtualId" />
+		<result column="USERID" jdbcType="DECIMAL" property="userId" />
+		<result column="HOUSENAME" jdbcType="VARCHAR" property="houseName" />
+		<result column="UNITNAME" jdbcType="VARCHAR" property="unitName" />
+		<result column="VIRTUALHOST_NAME" jdbcType="VARCHAR" property="virtualName" />
+		<result column="VIRTUALHOST_NO" jdbcType="DECIMAL" property="virtualNo" />
+		<result column="VIRTUALHOST_STATE" jdbcType="DECIMAL" property="virtualState" />
+		<result column="VIRTUALHOST_TYPE" jdbcType="DECIMAL" property="virtualType" />
+		<result column="NETWORK_ADDRESS" jdbcType="VARCHAR" property="netWorkAddress" />
+		<result column="MGN_ADDRESS" jdbcType="OTHER" property="mgnAddress" />
+		<result column="SUBORDINATEUNIT_AREACODE" jdbcType="VARCHAR" property="areaCodeStr" />
+	</resultMap>
+	
+	<sql id="baseSql">
+		a.USERID ,a.USERCODE ,a.NATURE ,a.UNITNAME ,
+		a.UNITNATURE ,a.IDTYPE ,a.IDNUMBER ,a.OFFICER_EMAIL ,a.OFFICER_MOBILE ,a.OFFICER_TEL ,a.OFFICER_ID ,
+		a.OFFICER_IDTYPE,a.OFFICER_NAME ,a.UNITADD ,a.ZIPCODE ,a.REGISTERTIME ,a.SERVERREGISTERTIME ,
+		a.UNITADDPROVINCEC ,a.UNITADDPROVINCEN ,a.UNITADDCITYC ,a.UNITADDCITYN,
+		a.UNITADDAREAC ,a.UNITADDAREAN ,a.IDENTIFY ,a.VERIFICATION_RESULT
+	</sql>
+	
+	<select id="getExportData" parameterType="com.aotain.cu.serviceapi.dto.UserInformationDTO"
+			resultMap="USERBaseResultMap">
+		SELECT
+		<include refid="baseSql"/>,
+		con_areaCode(a.SUBORDINATEUNIT_AREACODE,#{areaCodes}) as SUBORDINATEUNIT_AREACODE,
+		b.areaCodes as areaCodes,
+		b.authIdentities as authIdentities,
+		b.authHouses as authHouses
+		FROM idc_isms_base_user a
+		LEFT JOIN (SELECT '${areaCodes}' as areaCodes , '${authIdentities}' as authIdentities ,'${authHouses}' as authHouses from dual)b on 1=1
+		WHERE 1 = 1
+		<if test="unitName!=null and unitName !='' ">
+			AND a.UNITNAME like concat(concat('%',#{unitName}),'%')
+		</if>
+		<if test="nature!=null">
+			AND a.NATURE = #{nature}
+		</if>
+		<if test="identify!=null and identify!='' ">
+			AND split_areacode(a.IDENTIFY, #{identify}) = 1
+		</if>
+		<if test="dealFlag!=null ">
+			AND a.DEAL_FLAG = #{dealFlag}
+		</if>
+		<if test="czlx!=null ">
+			AND a.CZLX = #{czlx}
+		</if>
+		<if test="officerName!=null and officerName !='' ">
+			AND a.OFFICER_NAME like concat(concat('%',#{officerName}),'%')
+		</if>
+		<if test="unitAddress!=null and unitAddress !='' ">
+			AND a.UNITADD like concat(concat('%',#{unitAddress}),'%')
+		</if>
+		<if test="delFlag!=null ">
+			AND a.DEL_FLAG = #{delFlag}
+		</if>
+		<if test="authIdentities != null and authIdentities != '' ">
+			AND split_areacode(a.IDENTIFY, #{authIdentities}) = 1
+		</if>
+		<if test="areaCodes != null and areaCodes != '' ">
+			AND split_areacode(a.SUBORDINATEUNIT_AREACODE, #{areaCodes}) = 1
+		</if>
+	</select>
+	
+	<select id="getBandWidth" parameterType="java.util.Map" resultMap="BaseBandResultMap">
+		select
+		HHID, a.USERID, b.UNITNAME ,c.HOUSENAME, DISTRIBUTETIME, BANDWIDTH,con_areaCode(a.SUBORDINATEUNIT_AREACODE,#{areaCodes}) as SUBORDINATEUNIT_AREACODE
+		from IDC_ISMS_BASE_USER_HH a LEFT JOIN IDC_ISMS_BASE_USER b ON a.USERID=b.USERID
+		LEFT JOIN IDC_ISMS_BASE_HOUSE C ON a.HOUSEID=c.HOUSEID
+		where a.USERID = #{userId}
+		<if test="areaCodes != null and areaCodes != '' ">
+			AND split_areacode(a.SUBORDINATEUNIT_AREACODE, #{areaCodes}) = 1
+		</if>
+		<if test="authHouses != null and authHouses != '' ">
+			AND  split_areacode(a.HOUSEID, #{authHouses}) = 1
+		</if>
+	</select>
+
+	<select id="getUserService" parameterType="java.util.Map" resultMap="BaseServiceResultMap">
+		select
+		a.SERVICEID, a.USERID,b.UNITNAME, a.SERVICECONTENT, a.REGID, a.SETMODE,
+		a.SERVICETYPE, a.BUSINESS, a.REGTYPE, con_areaCode(a.SUBORDINATEUNIT_AREACODE,#{areaCodes}) as SUBORDINATEUNIT_AREACODE
+		from IDC_ISMS_BASE_USER_SERVICE a LEFT JOIN IDC_ISMS_BASE_USER b ON a.USERID=b.USERID
+		where a.USERID = #{userId,jdbcType=DECIMAL} AND nature = 1
+		<if test="areaCodes != null and areaCodes != '' ">
+			AND split_areacode(a.SUBORDINATEUNIT_AREACODE, #{areaCodes}) = 1
+		</if>
+	</select>
+	
+	<select id="getDomains" parameterType="java.util.Map" resultType="string">
+		select DOMAINNAME from IDC_ISMS_BASE_SERVICE_DOMAIN
+		where SERVICEID = #{serviceId,jdbcType=DECIMAL} AND USERID=#{userId}
+		
+	</select>
+	
+	<select id="getVirtualList" parameterType="java.util.Map" resultMap="BaseVirtualResultMap">
+		select
+		VIRTUALID, a.USERID, c.HOUSEID,b.UNITNAME,c.HOUSENAME, VIRTUALHOST_NAME, VIRTUALHOST_STATE, VIRTUALHOST_TYPE,
+		NETWORK_ADDRESS, MGN_ADDRESS,con_areaCode(a.SUBORDINATEUNIT_AREACODE,#{areaCodes}) as SUBORDINATEUNIT_AREACODE,a.VIRTUALHOST_NO
+		from IDC_ISMS_BASE_SERVICE_VIRTUAL a LEFT JOIN IDC_ISMS_BASE_USER b ON a.USERID=b.USERID
+		LEFT JOIN IDC_ISMS_BASE_HOUSE C ON a.HOUSEID=c.HOUSEID
+		where a.USERID = #{userId,jdbcType=DECIMAL}
+		<if test="areaCodes != null and areaCodes != '' ">
+			AND split_areacode(a.SUBORDINATEUNIT_AREACODE, #{areaCodes}) = 1
+		</if>
+		<if test="authHouses != null and authHouses!='' ">
+			AND  split_areacode(a.HOUSEID, #{authHouses}) = 1
+		</if>
+		
+	</select>
+	
+	
+</mapper>

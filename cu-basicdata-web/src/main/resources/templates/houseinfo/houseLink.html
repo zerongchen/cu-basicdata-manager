@@ -1,0 +1,355 @@
+<!DOCTYPE html >
+<html lang="zh-CN"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>基础数据智能管理系统-链路管理</title>
+
+<!--<link rel="shortcut icon" href="favicon.ico">-->
+
+  <div th:include="/common/header :: myheader"></div>
+  <div th:include="/common/footer :: myfooter"></div>
+  <script th:src="@{{path}/static/js/common/isms-component-areaCode.js(path=${contextPath})}"></script>
+  <script th:src="@{{path}/static/js/houseinfo/house_link.js(path=${contextPath})}"></script>
+  <script th:src="@{{path}/static/js/common/table_hover.js(path=${contextPath})}"></script>
+</head>
+<body class="gray-bg" style="background-color: #f3f3f4;">
+
+<!-- 查询条件-->
+<div class="row wrapper border-bottom white-bg page-heading">
+<div class="col-sm-12">
+  <div th:if="${session.ROLE_PRE_HOUSE_LINK_QUERY}" class="text-right">
+    <form id="indexSearch" class="form-inline">
+      <div class="form-group m-r-sm">
+        <label>链路编号</label>
+        <input type="text" class="form-control" name="linkNo" id="sel_linkNo"/>
+      </div>
+      <!--<div class="form-group m-r-sm">
+        <label>机房互联网出入口带宽(Mbps)</label>
+        <input type="text" class="form-control" name="bandWidth" id="sel_bandWidth"/>
+      </div>-->
+      <div class="form-group m-r-sm">
+        <label>机房出入口网关IP地址</label>
+        <input type="text" class="form-control" name="gatewayIP" id="sel_gatewayIP"/>
+      </div>
+      <div class="form-group m-r-sm">
+        <label>处理状态</label>
+        <select class="form-control" name="dealFlag" id="sel_dealFlag">
+          <option value="">请选择</option>
+          <option value="0">未上报</option>
+          <option value="1">已上报</option>
+        </select>
+      </div>
+      <div class="checkbox">
+        <button  class="btn btn-primary" type="button" id="houseIndexSearch">查询</button>
+        <button class="btn btn-outline btn-link" type="button" onClick="showsearch()">更多条件查询</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="row m-t m-r-none m-l onoffswitch-checkbox prompt-search">
+  <div class="col-sm-12 p-trbl">
+    <div class="text-left">
+      <form class="form-inline" id="searchForm">
+      <label>机房名称</label>
+  		<div class="form-group m-r-sm">
+          <select class="form-control"  multiple="multiple" name="houseId" id="ser_house">
+          </select>
+      </div>
+      <div class="form-group m-r-sm">
+        <label>操作类型</label>
+        <select class="form-control" name="czlx" id="sel_czlx">
+          <option value="">请选择</option>
+          <option value="1">新增</option>
+          <option value="2">变更</option>
+          <option value="3">删除</option>
+        </select>
+      </div>
+      <div class="form-group m-r-sm">
+            <label>更新时间</label>
+            <input type="text" class="form-control" id="start" autocomplete="off">
+            <label>至</label>
+            <input type="text" class="form-control" id="end" autocomplete="off">
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox ">
+        <div class="ibox-content">
+          <div class="row">
+            <div class="col-sm-12"> 
+              <!-- Example Toolbar -->
+              <div class="example-wrap text-right">
+                <div class="example">
+                  <div class="hidden-xs" id="commonButton" role="group">
+                    <button th:if="${session.ROLE_PRE_HOUSE_LINK_ADD}" type="button" class="btn btn-outline btn-info m-l-xs"  onclick="addFun()"> <i class="fa fa-plus" aria-hidden="true"></i> 新增</button>
+                    <button th:if="${session.ROLE_PRE_HOUSE_LINK_BATCH_DEL}" type="button" class="btn btn-outline btn-info" id="allDelte" data-toggle="modal" data-target="#delete"> <i class="fa fa-delete" aria-hidden="true"></i> 批量删除</button>
+                  	<input th:value="${session.ROLE_PRE_HOUSE_LINK_UPDATE}" type="hidden" id="updateRole">
+                    <input th:value="${session.ROLE_PRE_HOUSE_LINK_DEL}" type="hidden" id="delRole">
+                  </div>
+                  <table th:if="${session.ROLE_PRE_HOUSE_LINK_QUERY}" id="houseLinktable" data-mobile-responsive="true" class="text-left">
+
+                  </table>
+                </div>
+              </div>
+              <!-- End Example Toolbar --> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--新增-->
+<div class="modal inmodal fade modaladd" id="myModaladd" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="wrapper wrapper-content hper100">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="ibox">
+          <div class="ibox-content no-borders">
+            <label>
+              <h4>新增信息</h4>
+            </label>
+            <div class="ibox border m-b-sm">
+              <div class="ibox-title no-borders">
+                <h5><a class="addTitle" id="addFormTitle"><i class="fa fa-plus m-r-xs"></i>新增</a></h5>
+              </div>
+              <div class="ibox-content">
+
+                <div class="form-horizontal">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <form id="addForm0">
+                       <div class="form-group">
+                        <label class="col-md-2 control-label "><span class="text-danger">*&nbsp;</span>机房名称</label>
+                        <div class="col-md-3">
+                          <select class="form-control" id="houseId_add" name="houseId" required>
+                          </select>
+                        </div>
+                        <label id="idcName_error" class="control-label p-n error"></label>
+                      </div> 
+                      <!-- <div class="form-group">
+                         <label class="col-md-2 control-label p-n"><span class="text-danger">*&nbsp;</span>机房名称</label>
+                         <div class="col-md-4" id="houseIds">
+                         </div>
+                         <label name="houseId_error" class="control-label p-n error"></label>
+                     </div> -->
+                      <div class="hr-line-dashed"></div>
+                      <div class="form-group">
+                        <label class="col-md-2 control-label "><span class="text-danger">*&nbsp;</span>链路编号</label>
+                        <div class="col-md-3">
+                          <input type="text" name="linkNo" class="form-control" required>
+                        </div>
+                        <label id="linkNo_error" class="control-label p-n error"></label>
+                      </div>
+                      <div class="hr-line-dashed"></div>
+                      <div class="form-group">
+                        <label class="col-md-2 control-label "><span class="text-danger">*&nbsp;</span>机房出入口网关IP地址</label>
+                        <div class="col-md-3">
+                          <input type="text" name="gatewayIP" class="form-control" required>
+                        </div>
+                        <label id="gatewayIP_error" class="control-label p-n error"></label>
+                      </div>
+                      <!-- <div class="hr-line-dashed"></div>
+                      <div class="form-group">
+                        <label class="col-md-2 control-label"><span class="text-danger">*&nbsp;</span>隶属单位地市码</label>
+                        <div class="col-md-3">
+                          <select  id="areaCodeAdd" class="form-control" name="areaCode" required>
+                          </select>
+                        </div>
+                        <label id="areaCode_error" class="control-label p-n error"></label>
+                      </div> -->
+                      
+                      <div class="hr-line-dashed"></div>
+                       <div class="form-group">
+                        <label class="col-md-2 control-label"><span class="text-danger">*&nbsp;</span>隶属单位</label>
+                        <div class="col-md-3">
+                          <select  id="areaCodeAdd" class="form-control" name="areaCode" required>
+                          </select>
+                        </div>
+                         <label name="tips" class="control-label p-n"><span class="text-center center-block" title="该信息所隶属的管理区域或部门，单选"><i class="fa fa-question-circle" aria-hidden="true"></i></span></label>
+                         <label id="areaCode_error" class="control-label p-n error"></label>
+                      </div>
+                      <div class="hr-line-dashed"></div>
+                      <div class="form-group">
+                        <label class="col-md-2 control-label "><span class="text-danger">*&nbsp;</span>机房互联网出入口带宽(Mbps)</label>
+                        <div class="col-md-3">
+                          <input type="text" name="bandWidth" class="form-control" required>
+                        </div>
+                        <label id="bandWidth_error" class="control-label p-n error"></label>
+                      </div>
+                      </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="bottomDIv"></div>
+              <input id="addStep" value="0" style="display: none"/>
+            </div>
+            <div class="form-group m-t clear">
+              <div class="col-md-offset-2 col-md-3">
+                <button id="btnAdd" type="button" class="btn btn-primary save">提交</button>
+                <a id="btnCancel" class="m-l-sm" data-dismiss="modal">取消</a> </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+<!--修改-->
+<div class="modal inmodal fade modaladd" id="myModaledit" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="wrapper wrapper-content hper100">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="ibox">
+          <form id="editForm">
+            <div class="ibox-content no-borders">
+              <label>
+                <h4>修改信息</h4>
+              </label>
+              <div class="ibox border m-b-sm">
+                <div class="ibox-content">
+				<input name="houseId" type="hidden">
+                  <div class="form-horizontal">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <input type="hidden" name="gatewayId">
+                        <div class="form-group">
+                          <label class="col-md-2 control-label "><span class="text-danger">*&nbsp;</span>机房名称</label>
+                          <div class="col-md-3">
+                           <select class="form-control" id="houseId_edit" name="houseId" disabled="disabled" required>
+                          </select>
+                          </div>
+                          <label id="houseId_error" class="control-label p-n error"></label>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                          <label class="col-md-2 control-label "><span class="text-danger">*&nbsp;</span>链路编号</label>
+                          <div class="col-md-3">
+                            <input type="text" name="linkNo" class="form-control" required>
+                          </div>
+                          <label id="linkNo_error" class="control-label p-n error"></label>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                          <label class="col-md-2 control-label "><span class="text-danger">*&nbsp;</span>机房出入口网关IP地址</label>
+                          <div class="col-md-3">
+                            <input type="text" name="gatewayIP" class="form-control" required>
+                          </div>
+                          <label id="gatewayIP_error" class="control-label p-n error"></label>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                        <label class="col-md-2 control-label"><span class="text-danger">*&nbsp;</span>隶属单位</label>
+                        <div class="col-md-3">
+                          <select  id="areaCodeEdit" class="form-control" name="areaCode">
+                          </select>
+                        </div>
+                          <label name="tips" class="control-label p-n"><span class="text-center center-block" title="该信息所隶属的管理区域或部门，单选"><i class="fa fa-question-circle" aria-hidden="true"></i></span></label>
+                          <label name="areaCode_error" class="control-label p-n error"></label>
+                      	</div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                          <label class="col-md-2 control-label "><span class="text-danger">*&nbsp;</span>机房互联网出入口带宽(Mbps)</label>
+                          <div class="col-md-3">
+                            <input type="text" name="bandWidth" class="form-control" required>
+                          </div>
+                          <label id="bandWidth_error" class="control-label p-n error"></label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group m-t clear">
+                <div class="col-md-offset-2 col-md-3">
+                  <button id="btnEdit" type="button" class="btn btn-primary save">确认</button>
+                  <a id="btnCancelEdit" class="m-l-sm" data-dismiss="modal">取消</a> </div>
+              </div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--导入-->
+<div class="modal inmodal fade modaladd" id="upload" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="wrapper wrapper-content hper100">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="ibox">
+          <div class="ibox-content no-borders">
+            <label>
+            <h4>导入</h4>
+            </label>
+            <div class="pull-right">
+              <button type="button" class="btn btn-success" data-dismiss="modal"><i class="fa fa-reply-all"></i> 返回</button>
+            </div>
+            <form class="form-horizontal" id="commentForm">
+              <div class="form-group">
+                <label class="col-md-1 control-label">操作</label>
+                <div class="col-md-4">
+                  <select class="form-control">
+                    <option value="请选择">请选择</option>
+                    <option value="全量">全量</option>
+                    <option value="增量" selected="">增量</option>
+                  </select>
+                </div>
+              </div>
+              <div class="hr-line-dashed"></div>
+              <div class="form-group">
+                <label class="col-md-1 control-label">文件</label>
+                <div class="col-md-4">
+                  <input type="file" class="form-control" />
+                </div>
+                <div class="help-block m-b-n"> <a>下载模板</a> </div>
+              </div>
+              <div class="hr-line-dashed"></div>
+              <div class="form-group">
+                <label class="col-md-1 control-label">上次进度</label>
+                <div class="col-md-4">
+                  <div class="progress m-b-n">
+                    <div style="width: 48%;" class="progress-bar">48%</div>
+                  </div>
+                </div>
+              </div>
+              <div class="hr-line-dashed"></div>
+              <div class="form-group">
+                <label class="col-md-1 control-label">导入结果</label>
+                <div class="col-md-4 help-block m-b-n"> 异常结果 </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,149 @@
+<div th:fragment="houseedit">
+<div class="modal inmodal fade modaladd" id="modify" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="wrapper wrapper-content hper100">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="ibox ">
+                    <div class="ibox-content no-borders">
+                        <label>
+                            <h4>修改</h4>
+                        </label>
+                        <div id="wizard-modify">
+                            <form id="edit_form" autocomplete="off">
+                                <div class="ibox border m-b-sm">
+                                    <div class="ibox-title no-borders">
+                                        <h5>机房信息</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div class="form-horizontal">
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>机房编号</label>
+                                                <div class="col-md-4">
+                                                    <input type="hidden" id="editHouseId" name="houseId">
+                                                    <input type="text" class="form-control" maxlength="256" id="houseNo_edt" readonly="readonly" name="houseIdStr" required>
+                                                </div>
+                                                <label id="houseIdStr_error" class="control-label p-n error"></label>
+                                            </div>
+                                            <div class="hr-line-dashed"></div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>机房名称</label>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" maxlength="128" id="houseName_edt" name="houseName" required>
+                                                </div>
+                                                <label id="houseName_error" class="control-label p-n error"></label>
+                                            </div>
+                                            <div class="hr-line-dashed"></div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>机房性质</label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control" id="houseType_edt" name="houseType" required>
+                                                    </select>
+                                                </div>
+                                                <label id="houseType_error" class="control-label p-n error"></label>
+                                            </div>
+                                            <div class="hr-line-dashed"></div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>专线机房标识</label>
+                                                <div class="col-md-4">
+                                                    <input type="hidden" class="form-control" id="identity_dt_id" name="identity" >
+                                                    <input type="text" class="form-control" id="identyFlag_edt" readonly="readonly" required>
+                                                </div>
+                                                <label id="identity_error" class="control-label p-n error"></label>
+                                            </div>
+                                            <div class="hr-line-dashed"></div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>机房所在地</label>
+                                                <div class="col-md-2">
+                                                    <select class="form-control" id="addProvince_edt"></select>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <select class="form-control" id="addCity_edt"></select>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <select class="form-control" id="addCounty_edt" required></select>
+                                                </div>
+                                                <label id="addProvince_error" class="control-label p-n error"></label>
+                                            </div>
+                                            <div class="hr-line-dashed"></div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>机房地址</label>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" maxlength="128" id="house_edt" name="houseAddress" required>
+                                                </div>
+                                                <label name="tips" class="control-label p-n"><span class="text-center center-block" title="请输入详细地址，如：XXX路XXX号"><i class="fa fa-question-circle" aria-hidden="true"></i></span></label>
+                                                <label id="houseAddress_error" class="control-label p-n error"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ibox border m-b-sm">
+                                    <div class="ibox-title no-borders">
+                                        <h5>联系人信息</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div class="form-horizontal">
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>安全责任人姓名</label>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" id="netSecName_edt" maxlength="32" name="houseOfficerName" required>
+                                                </div>
+                                                <label id="houseOfficerName_error" class="control-label p-n error"></label>
+                                            </div>
+                                            <div class="hr-line-dashed"></div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>安全责任人证件类型</label>
+                                                <div class="col-md-4">
+                                                    <select class="form-control" id="netSecType_edt" name="houseOfficerIdType" required>
+                                                    </select>
+                                                </div>
+                                                <label id="houseOfficerIdType_error" class="control-label p-n error"></label>
+                                            </div>
+                                            <div class="hr-line-dashed"></div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>安全责任人证件号码</label>
+                                                <div class="col-md-4">
+                                                    <input type="text" class="form-control" maxlength="32" id="netSecNo_edt" name="houseOfficerId" required>
+                                                </div>
+                                                <label id="houseOfficerId_error" class="control-label p-n error"></label>
+                                            </div>
+                                            <div class="hr-line-dashed"></div>
+                                            <div class="form-group" id="phoneAddMes">
+                                                <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>安全责任人固定电话</label>
+                                                <div class="col-md-4">
+                                                    <input type="isPhone" class="form-control" maxlength="32" id="netSecPhone_edt" name="houseOfficerTelephone" required>
+                                                </div>
+                                                <label id="houseOfficerTelephone_error" class="control-label p-n error"></label>
+                                            </div>
+                                            <div class="hr-line-dashed"></div>
+                                            <div class="form-group" id="mobliePhoneAddMes">
+                                                <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>安全责任人移动电话</label>
+                                                <div class="col-md-4">
+                                                    <input type="isMobile" class="form-control" maxlength="32" id="netSecMobilePhone_edt" name="houseOfficerMobile" required>
+                                                </div>
+                                                <label id="houseOfficerMobile_error" class="control-label p-n error" required></label>
+                                            </div>
+                                            <div class="hr-line-dashed"></div>
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label"><span class="text-danger">*&nbsp;</span>安全责任人Email</label>
+                                                <div class="col-md-4">
+                                                    <input type="email" class="form-control" maxlength="64" id="netSecMail_edt" name="houseOfficerEmail" required>
+                                                </div>
+                                                <label id="houseOfficerEmail_error" class="control-label p-n error"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="form-group m-t clear">
+                                <div class="col-md-offset-2 col-md-3">
+                                    <button id="btn_edt" type="button" class="btn btn-primary save">预审</button>
+                                    <a id="btnCancel" class="m-l-sm" data-dismiss="modal">取消</a> </div>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

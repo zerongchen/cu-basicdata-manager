@@ -1,0 +1,53 @@
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!--左侧导航开始-->
+<!--logo-->
+<div class="nav-header">
+  <div class="dropdown profile-element"> <span><img alt="image" class="img-circle" src="../img/profile_small.png"></span> <a href="../index.html"> <span class="clear"><strong class="font-bold">基础数据智能管理系统</strong></span> <span class="clear">V1.0.0</span> </a> </div>
+  <div class="logo-element">CU</div>
+</div>
+<!--logo 结束-->
+<nav class="navbar-default navbar-static-side menubar-active" role="navigation">
+  <div class="nav-close"><i class="fa fa-times-circle"></i> </div>
+  <div class="sidebar-collapse">
+    <ul class="nav side-menu">
+      <li> <a href="#"><i class="fa fa-folder"></i><span class="nav-label">机房主体信息预录入管理</span> <span class="fa arrow"></span> </a>
+        <ul class="nav nav-second-level">
+          <li> <a class="J_menuItem" href="../computerRoom-main.html">机房主体信息管理</a> </li>
+          <li> <a class="J_menuItem" href="../computerRoom-IP.html">IP信息管理</a> </li>
+          <li> <a class="J_menuItem" href="">机架信息管理</a> </li>
+          <li> <a class="J_menuItem" href="">链路管理</a> </li>
+        </ul>
+      </li>
+      <li > <a href="#"><i class="fa fa-folder"></i><span class="nav-label">用户信息预录入管理</span> <span class="fa arrow"></span> </a>
+        <ul class="nav nav-second-level">
+          <li> <a class="J_menuItem" href="../use-main.html">用户主体信息管理</a> </li>
+          <li> <a class="J_menuItem" href="">用户服务信息管理</a> </li>
+          <li> <a class="J_menuItem" href="../use-web.html">用户网络资源管理</a> </li>
+          <li> <a class="J_menuItem" href="">用户IP信息</a> </li>
+          <li> <a class="J_menuItem" href="">虚拟主机信息</a> </li>
+        </ul>
+      </li>
+      <li> <a href="#"> <i class="fa fa-folder"></i> <span class="nav-label">拨测管理</span> <span class="fa arrow"></span> </a>
+        <ul class="nav nav-second-level">
+          <li> <a class="J_menuItem" href="">拨测任务管理</a> </li>
+          <li> <a class="J_menuItem" href="">拨测目标管理</a> </li>
+          <li> <a class="J_menuItem" href="">拨测结果查询</a> </li>
+          <li> <a class="J_menuItem" href="">拨测告警</a> </li>
+          <li> <a class="J_menuItem" href="">拨测报告</a> </li>
+        </ul>
+      </li>
+      <li> <a href="#"> <i class="fa fa-folder"></i> <span class="nav-label">拨测资源管理</span> <span class="fa arrow"></span> </a>
+        <ul class="nav nav-second-level">
+          <li> <a class="J_menuItem" href="">拨测站点管理</a> </li>
+        </ul>
+      </li>
+      <li> <a href="#"><i class="fa fa-folder"></i> <span class="nav-label">数据分析管理</span> <span class="fa arrow"></span> </a>
+        <ul class="nav nav-second-level">
+          <li><a class="J_menuItem" >活跃IP空闲统计</a> </li>
+          <li><a class="J_menuItem" >端口访问统计</a> </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+<!--左侧导航结束-->

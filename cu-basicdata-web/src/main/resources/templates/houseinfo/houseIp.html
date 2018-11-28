@@ -1,0 +1,392 @@
+<!DOCTYPE html >
+<html lang="zh-CN"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>基础数据智能管理系统</title>
+
+<!--<link rel="shortcut icon" href="favicon.ico">-->
+  <div th:include="/common/header :: myheader"></div>
+  <div th:include="/common/footer :: myfooter"></div>
+  <script th:src="@{{path}/static/js/houseinfo/houseIp.js(path=${contextPath})}"></script>
+  <script th:src="@{{path}/static/js/common/isms-component-areaCode.js(path=${contextPath})}"></script>
+  <script th:src="@{{path}/static/js/plugins/suggest/bootstrap-suggest.js(path=${contextPath})}"></script>
+  <script th:src="@{{path}/static/js/common/table_hover.js(path=${contextPath})}"></script>
+</head>
+<body class="gray-bg" style="background-color: #f3f3f4;">
+
+<div class="row wrapper border-bottom white-bg page-heading">
+  <div class="col-sm-12">
+    <div th:if="${session.ROLE_PRE_HOUSE_IPSEG_QUERY}" class="text-right">
+      <form id="searchForm" class="form-inline">
+        <div class="form-group m-r-sm">
+          <label>机房名称</label>
+          <select class="form-control"  multiple="multiple" name="houseId" id="sel_house">
+          </select>
+        </div>
+        <div class="form-group m-r-sm">
+          <label>单位名称</label>
+          <input type="text" class="form-control" name="userName"/>
+        </div>
+        <div class="form-group m-r-sm">
+          <label>IP地址</label>
+          <input type="text" class="form-control" name="startIP"/>
+        </div>
+        <div class="form-group m-r-sm">
+          <label>处理状态</label>
+          <select class="form-control" name="dealFlag">
+            <option value="">请选择</option>
+            <option value="0">未上报</option>
+            <option value="1">已上报</option>
+          </select>
+        </div>
+        <div class="checkbox">
+          <button class="btn btn-primary" type="button" id="searchBtn">查询</button>
+          <button class="btn btn-outline btn-link" type="button" onClick="showsearch()">更多条件查询</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row m-t m-r-none m-l onoffswitch-checkbox prompt-search">
+    <div class="col-sm-12 p-trbl">
+      <div class="text-left">
+        <form class="form-inline">
+          <div class="form-group m-r-sm">
+            <label>操作类型</label>
+            <select class="form-control" id="czlx">
+              <option value="">请选择</option>
+              <option value="1">新增</option>
+              <option value="2">变更</option>
+              <option value="3">删除</option>
+            </select>
+          </div>
+          <div class="form-group m-r-sm">
+            <label>IP地址使用方式</label>
+            <select class="form-control" id="ipType">
+              <option value="">请选择</option>
+              <option value="0">静态</option>
+              <option value="1">动态</option>
+              <option value="2">保留</option>
+              <option value="3">专线</option>
+              <option value="999">云虚拟</option>
+            </select>
+          </div>
+          <div class="form-group m-r-sm">
+            <label>更新时间</label>
+            <input type="text" class="form-control" id="start" autocomplete="off">
+            <label>至</label>
+            <input type="text" class="form-control" id="end" autocomplete="off">
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox ">
+        <div class="ibox-content">
+          <div class="row">
+            <div class="col-sm-12">
+                <!-- Example Toolbar -->
+                <div class="example-wrap text-right">
+                <div class="example">
+                  <div class="hidden-xs" id="commonButton" role="group">
+                    <button th:if="${session.ROLE_PRE_HOUSE_IPSEG_ADD}" type="button" class="btn btn-outline btn-info m-l-xs" onclick="addFun()"> <i class="fa fa-plus" aria-hidden="true"></i> 新增</button>
+                    <button th:if="${session.ROLE_PRE_HOUSE_IPSEG_BATCH_DEL}" type="button" class="btn btn-outline btn-danger demo4"  onclick="deleteFun()"> <i class="fa fa-trash-o" aria-hidden="true"></i> 批量删除</button>
+                  	<input th:value="${session.ROLE_PRE_HOUSE_IPSEG_UPDATE}" type="hidden" id="updateRole">
+                    <input th:value="${session.ROLE_PRE_HOUSE_IPSEG_DEL}" type="hidden" id="delRole">
+                  </div>
+                  <table th:if="${session.ROLE_PRE_HOUSE_IPSEG_QUERY}" id="infotable" data-mobile-responsive="true" class="text-left">
+
+                  </table>
+                </div>
+              </div>
+              <!-- End Example Toolbar --> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--新增-->
+<div class="modal inmodal fade modaladd" id="myModaladd" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="wrapper wrapper-content hper100">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="ibox">
+          <input type="hidden" id="idPlus" value="1">
+          <div class="ibox-content no-borders">
+            <label>
+              <h4>新增信息</h4>
+            </label>
+            <div class="ibox border m-b-sm">
+              <div class="ibox-title no-borders">
+                <h5><a class="addTitle"><i class="fa fa-plus m-r-xs"></i>新增</a></h5>
+              </div>
+              <div class="ibox-content">
+
+                <div class="form-horizontal">
+                  <form id="ipChildForm" autocomplete="off">
+
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="form-group">
+                        <label class="col-md-2 control-label"><span class="text-danger">*&nbsp;</span>机房名称</label>
+                        <div class="col-md-3">
+                          <select class="form-control" id="houseId_add" name="houseId" required>
+                          </select>
+                        </div>
+                        <label id="houseId_error" class="control-label p-n error"></label>
+                      </div>
+                      <div class="hr-line-dashed"></div>
+                      <div class="form-group">
+                        <label class="col-md-2 control-label "><span class="text-danger">*&nbsp;</span>起始IP地址</label>
+                        <div class="col-md-3">
+                          <input type="text" class="form-control" name="startIpAdd">
+                        </div>
+                        <label class="col-md-2 control-label "><span class="text-danger">*&nbsp;</span>终止IP地址</label>
+                        <div class="col-md-3">
+                          <input type="text" class="form-control" name="endIpAdd">
+                        </div>
+                        <div class="col-md-1 help-block m-b-n"> <a class="addGroup-ip"><i class="fa fa-plus-circle"></i> 新增</a> </div>
+                        <!--<label  id="startIP_error" class="col-md-3 control-label p-n error"></label>-->
+                        <label  id="endIP_error" class="col-md-3 p-l-lg col-md-offset-2 text-danger"></label>
+                      </div>
+                      <div class="hr-line-dashed"></div>
+                      <div class="form-group">
+                        <label class="col-md-2 control-label "><span class="text-danger">*&nbsp;</span>分配使用日期</label>
+                        <div class="col-md-3">
+                          <input type="text" class="form-control" id="startUseAdd" name="useTime"  autocomplete="off" required>
+                        </div>
+                        <label name="useTime_error" class="control-label p-n error"></label>
+                      </div>
+                      <div class="hr-line-dashed"></div>
+                      <div class="form-group">
+                        <label class="col-md-2 control-label "><span class="text-danger">*&nbsp;</span>IP地址使用方式</label>
+                        <div class="col-md-3">
+                          <select class="form-control" id="ipUseType" name="ipType" required>
+                            <option value="">请选择</option>
+                            <option value="0">静态</option>
+                            <option value="1">动态</option>
+                            <option value="2">保留</option>
+                            <option value="3">专线</option>
+                            <option value="999">云虚拟</option>
+                          </select>
+                        </div>
+                        <label id="ipType_error" class="control-label p-n error"></label>
+                      </div>
+                       <div class="hr-line-dashed"></div>
+                      <div class="form-group">
+                        <label class="col-md-2 control-label"><span class="text-danger">*&nbsp;</span>隶属单位</label>
+                        <div class="col-md-3">
+                          <select  id="areaCodeAdd" class="form-control selectpicker" name="areaCode" required>
+                          </select>
+                        </div>
+                        <label name="tips" class="control-label p-n"><span class="text-center center-block" title="该信息所隶属的管理区域或部门，单选"><i class="fa fa-question-circle" aria-hidden="true"></i></span></label>
+                        <label id="areaCode_error" class="col-md-10 p-l-lg col-md-offset-2 text-danger"></label>
+                      </div>
+
+                      <div class="hr-line-dashed blflg"></div>
+                      <div class="form-group blflg">
+                        <label class="col-md-2 control-label ">使用人的单位名称</label>
+                        <div class="col-md-4">
+                          <div class="input-group">
+                            <input type="text" class="form-control" id="useNameAdd" name="userName" placeholder="使用人的单位名称">
+                            <div class="input-group-btn">
+                              <button type="button" class="btn btn-white dropdown-toggle"> <span class="caret"></span> </button>
+                              <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        <label name="tips" class="control-label p-n"><span class="text-center center-block" title="当IP地址使用方式选择非“保留”时必填，支持联想输入"><i class="fa fa-question-circle" aria-hidden="true"></i></span></label>
+                        <label id="userName_error" name="ip_userName_error" class="control-label p-n error"></label>
+                      </div>
+                      <div class="hr-line-dashed blflg"></div>
+                      <div class="form-group blflg">
+                        <label class="col-md-2 control-label">证件类型</label>
+                        <div class="col-md-4">
+                          <select class="form-control" id="ipTypeAdd" name="idType">
+                          </select>
+                        </div>
+                        <label name="tips" class="control-label p-n"><span class="text-center center-block" title="选填，当输入证件号码时必填"><i class="fa fa-question-circle" aria-hidden="true"></i></span></label>
+                        <label id="idType_error" name="ip_idType_error" class="control-label p-n error"></label>
+                      </div>
+                      <div class="hr-line-dashed blflg"></div>
+                      <div class="form-group blflg">
+                        <label class="col-md-2 control-label">证件号码</label>
+                        <div class="col-md-4">
+                          <input type="text" class="form-control" id="ipNoAdd" name="idNumber">
+                        </div>
+                        <label name="tips" class="control-label p-n"><span class="text-center center-block" title="选填，当输入证件类型时必填"><i class="fa fa-question-circle" aria-hidden="true"></i></span></label>
+                        <label id="idNumber_error" name="ip_idNumber_error" class="control-label p-n error"></label>
+                      </div>
+
+                    </div>
+                  </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="form-group m-t clear">
+              <div class="col-md-offset-2 col-md-3">
+                <button id="btnAdd" type="button" class="btn btn-primary save">提交</button>
+                <a id="btnCancel" class="m-l-sm" data-dismiss="modal">取消</a> </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--修改-->
+<div class="modal inmodal fade modaladd" id="myModaledit" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="wrapper wrapper-content hper100">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="ibox">
+          <form id="editForm" autocomplete="off">
+            <div class="ibox-content no-borders">
+              <label>
+                <h4>修改信息</h4>
+              </label>
+              <div class="ibox border m-b-sm">
+                <div class="ibox-content">
+
+                  <div class="form-horizontal">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <input type="hidden" name="ipSegId">
+                        <input type="hidden" name="updateUserId">
+                        <input type="hidden" name="houseId">
+                        <div class="form-group">
+                          <label class="col-md-2 control-label "><span class="text-danger">*&nbsp;</span>机房名称</label>
+                          <div class="col-md-3">
+                            <!--<select class="form-control"  name="houseId" id="houseId_edit" required>
+                            </select>-->
+                            <input type="text" class="form-control" name="houseName" readonly="true">
+                          </div>
+                          <label id="houseId_error" class="control-label p-n error"></label>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                          <label class="col-md-2 control-label "><span class="text-danger">*&nbsp;</span>起始IP地址</label>
+                          <div class="col-md-3">
+                            <input type="text" class="form-control" name="startIP">
+                          </div>
+                          <label class="col-md-2 control-label "><span class="text-danger">*&nbsp;</span>终止IP地址</label>
+                          <div class="col-md-3">
+                            <input type="text" class="form-control" name="endIP">
+                          </div>
+                          <!--<label  id="startIP_error" class="col-md-2 control-label p-n error"></label>-->
+                          <label  id="endIP_error" class="col-md-3 p-l-lg col-md-offset-2 text-danger"></label>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                          <label class="col-md-2 control-label "><span class="text-danger">*&nbsp;</span>分配使用日期</label>
+                          <div class="col-md-3">
+                            <input type="text" class="form-control" id="useTimeAdd" name="useTime"  autocomplete="off" required>
+                          </div>
+                          <label id="useTime_error" class="control-label p-n error"></label>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                          <label class="col-md-2 control-label "><span class="text-danger">*&nbsp;</span>IP地址使用方式</label>
+                          <div class="col-md-3">
+                            <select class="form-control" id="editIpUseType" name="ipType" required>
+                              <option value="">请选择</option>
+                              <option value="0">静态</option>
+                              <option value="1">动态</option>
+                              <option value="2">保留</option>
+                              <option value="3">专线</option>
+                              <option value="999">云虚拟</option>
+                            </select>
+                          </div>
+                          <label id="ipType_error" class="control-label p-n error-ip"></label>
+                        </div>
+                         <div class="hr-line-dashed"></div>
+                       <div class="form-group">
+                        <label class="col-md-2 control-label"><span class="text-danger">*&nbsp;</span>隶属单位</label>
+                        <div class="col-md-3">
+                          <select  id="areaCodeEdit" class="form-control selectpicker" name="areaCode" required>
+                          </select>
+                        </div>
+                         <label name="tips" class="control-label p-n"><span class="text-center center-block" title="该信息所隶属的管理区域或部门，单选"><i class="fa fa-question-circle" aria-hidden="true"></i></span></label>
+                         <label id="areaCode_error" class="col-md-10 p-l-lg col-md-offset-2 text-danger"></label>
+                      </div>
+
+                      <div class="hr-line-dashed blflg"></div>
+                      <div class="form-group blflg">
+                        <label class="col-md-2 control-label ">使用人的单位名称</label>
+                        <div class="col-md-4">
+                          <div class="input-group">
+                            <input type="text" class="form-control" id="useNamEdit" name="userName" placeholder="使用人的单位名称">
+                            <div class="input-group-btn">
+                              <button type="button" class="btn btn-white dropdown-toggle"> <span class="caret"></span> </button>
+                              <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                        <label name="tips" class="control-label p-n"><span class="text-center center-block" title="当IP地址使用方式选择非“保留”时必填，支持联想输入"><i class="fa fa-question-circle" aria-hidden="true"></i></span></label>
+                        <label id="userName_error" name="ip_userName_error" class="control-label p-n error"></label>
+                      </div>
+                      <div class="hr-line-dashed blflg"></div>
+                      <div class="form-group blflg">
+                        <label class="col-md-2 control-label">证件类型</label>
+                        <div class="col-md-4">
+                          <select class="form-control" id="ipTypeEdit" name="idType">
+                          </select>
+                        </div>
+                        <label name="tips" class="control-label p-n"><span class="text-center center-block" title="选填，当输入证件号码时必填"><i class="fa fa-question-circle" aria-hidden="true"></i></span></label>
+                        <label id="idType_error" name="ip_idType_error" class="control-label p-n error"></label>
+                      </div>
+                      <div class="hr-line-dashed blflg"></div>
+                      <div class="form-group blflg">
+                        <label class="col-md-2 control-label">证件号码</label>
+                        <div class="col-md-4">
+                          <input type="text" class="form-control" id="ipNoAdd" name="idNumber">
+                        </div>
+                        <label name="tips" class="control-label p-n"><span class="text-center center-block" title="选填，当输入证件类型时必填"><i class="fa fa-question-circle" aria-hidden="true"></i></span></label>
+                        <label id="idNumber_error" name="ip_idNumber_error" class="control-label p-n error"></label>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group m-t clear">
+                <div class="col-md-offset-2 col-md-3">
+                  <button id="btnEdit" type="button" class="btn btn-primary save">提交</button>
+                  <a id="btnCancelEdit" class="m-l-sm" data-dismiss="modal">取消</a> </div>
+              </div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</body>
+</html>

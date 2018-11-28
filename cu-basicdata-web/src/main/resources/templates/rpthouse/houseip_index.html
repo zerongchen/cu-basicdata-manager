@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header :: myheader">
+  <style type="text/css">
+    .select2-container .select2-selection--single{
+      height:34px;
+      line-height: 34px;
+    }
+  </style>
+</head>
+<body class="gray-bg">
+<!-- 查询条件-->
+<div class="row wrapper border-bottom white-bg page-heading">
+<div class="col-sm-12">
+  <div class="text-right">
+    <form id="indexSearch" class="form-inline">
+      <div class="form-group m-r-sm" style="clear: both">
+        <label>机房名称</label>
+        <select class="form-control"  multiple="multiple" id="houseId" name="houseId">
+        </select>
+      </div>
+      <div class="form-group m-r-sm">
+        <label>IP地址使用方式</label>
+        <select  class="form-control" id="ipType" name="ipType">
+          <option value="">请选择</option>
+          <option value="0">静态</option>
+          <option value="1">动态</option>
+          <option value="2">保留</option>
+          <option value="3">专线</option>
+          <option value="999">云虚拟</option>
+        </select>
+      </div>
+      <div class="form-group m-r-sm">
+        <label>起始IP</label>
+        <input type="text" name="startIP" class="form-control" />
+      </div>
+      <div class="form-group m-r-sm">
+        <label>结束IP</label>
+        <input type="text" name="endIP" class="form-control" />
+      </div>
+      <div class="checkbox">
+        <button th:if="${session.RPT_HOUSE_IP_QUERY}==1"  class="btn btn-primary" type="button" id="serviceIndexSearch">查询</button>
+        <button class="btn btn-outline btn-link" type="button" onClick="showsearch()">更多条件查询</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="row m-t m-r-none m-l onoffswitch-checkbox prompt-search">
+  <div class="col-sm-12 p-trbl">
+    <div class="text-left">
+      <form class="form-inline">
+        <div class="form-group m-r-sm">
+          <label>单位名称</label>
+          <input type="text" id="userName" class="form-control" />
+        </div>
+        <div class="form-group m-r-sm">
+          <label>更新时间</label>
+          <input type="text" class="form-control" id="start">
+          <label>至</label>
+          <input type="text" class="form-control" id="end">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox ">
+        <div class="ibox-content">
+          <div class="row">
+            <div class="col-sm-12">
+              <!-- Example Toolbar -->
+              <div class="example-wrap text-right">
+                <div class="example">
+                  <table id="indexTable" data-mobile-responsive="true" class="text-left">
+                  </table>
+                </div>
+              </div>
+              <!-- End Example Toolbar -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--javascript加载 -->
+<div th:include="/common/footer :: myfooter"></div>
+<div th:include="/common/footer :: #rpthouuseip"></div>
+</body>
+</html>

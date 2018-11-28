@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:include="/common/header :: myheader"></head>
+<body class="gray-bg">
+<!-- 查询条件-->
+<div class="row wrapper border-bottom white-bg page-heading">
+<div class="col-sm-12">
+  <div th:if="${session.ROLE_PRE_USER_HH_QUERY}" class="text-right">
+    <form id="indexSearch" class="form-inline">
+      <div class="form-group m-r-sm" style="clear: both">
+        <label>单位名称</label>
+        <input type="text" class="form-control" name="unitName"/>
+      </div>
+      <div class="form-group m-r-sm">
+        <label>机房名称</label>
+        <select class="form-control"  multiple="multiple" id="sel_house">
+        </select>
+      </div>
+      <div class="form-group m-r-sm">
+        <label>处理状态</label>
+        <select class="form-control" name="dealFlag">
+          <option value="">请选择</option>
+          <option value="0">未上报</option>
+          <option value="1">已上报</option>
+        </select>
+      </div>
+      <div class="form-group m-r-sm">
+        <label>操作类型</label>
+        <select class="form-control" name="czlx">
+          <option value="">请选择</option>
+          <option value="1">新增</option>
+          <option value="2">变更</option>
+          <option value="3">删除</option>
+        </select>
+      </div>
+      <div class="checkbox">
+        <button  class="btn btn-primary" type="button" id="serviceIndexSearch">查询</button>
+        <button class="btn btn-outline btn-link" type="button" onClick="showsearch()">更多条件查询</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="row m-t m-r-none m-l onoffswitch-checkbox prompt-search">
+  <div class="col-sm-12 p-trbl">
+    <div class="text-left">
+      <form class="form-inline">
+        <div class="form-group m-r-sm">
+          <label>网络带宽</label>
+          <input type="text" class="form-control" id="bandWidth">
+        </div>
+        <div class="form-group m-r-sm">
+          <label>带宽分配日期</label>
+          <input type="text" class="form-control" id="distributeTime">
+        </div>
+        <div class="form-group m-r-sm">
+          <label>更新时间</label>
+          <input type="text" class="form-control" id="start">
+          <label>至</label>
+          <input type="text" class="form-control" id="end">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="ibox ">
+        <div class="ibox-content">
+          <div class="row">
+            <div class="col-sm-12">
+              <!-- Example Toolbar -->
+              <div class="example-wrap text-right">
+                <div class="example">
+                  <div class="hidden-xs" id="commonButton" role="group">
+                    <button th:if="${session.ROLE_PRE_USER_HH_ADD}" type="button" class="btn btn-outline btn-info m-l-xs" data-toggle="modal" data-target="#add-modal" id="bandWidthAddBt"> <i class="fa fa-plus" aria-hidden="true"></i> 新增</button>
+                    <button th:if="${session.ROLE_PRE_USER_HH_BATCH_DEL}" type="button" class="btn btn-outline btn-danger demo4"  id="index_delete"> <i class="fa fa-trash-o" aria-hidden="true"></i> 批量删除</button>
+                  	<input th:value="${session.ROLE_PRE_USER_HH_UPDATE}" type="hidden" id="updateRole">
+                    <input th:value="${session.ROLE_PRE_USER_HH_DEL}" type="hidden" id="delRole">
+                  </div>
+                  <table th:if="${session.ROLE_PRE_USER_HH_QUERY}" id="indexTable" data-mobile-responsive="true" class="text-left">
+                  </table>
+                </div>
+              </div>
+              <!-- End Example Toolbar -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--新增-->
+<div class="modal inmodal fade modaladd" id="myModaladd" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="wrapper wrapper-content hper100">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="ibox">
+          <input type="hidden" id="idPlus" value="1">
+          <div class="ibox-content no-borders" id="hhForms">
+            <label>
+              <h4>新增信息</h4>
+            </label>
+            <div class="ibox border m-b-sm">
+              <div class="ibox-title no-borders">
+                <h5><a class="addTitle" id="bandWidthTitle">新增</a></h5>
+              </div>
+              <div class="ibox-content">
+                <div class="form-horizontal">
+                  <div class="row no-margins">
+                    <form id="userHHChildForm" autocomplete="off">
+                      <div class="col-sm-12">
+                        <div class="form-group">
+                          <label class="col-md-2 control-label p-n"><span class="text-danger">*&nbsp;</span>单位名称</label>
+                          <input type="hidden" id="addPlus" value="1">
+                          <input type="hidden" id="bandWidthId_sa" name="hhId">
+                          <div class="col-md-4"  id="unitNameSel"></div>
+                          <label id="unitName_error" name="unitName_error" class="control-label p-n error"></label>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                          <label class="col-md-2 control-label p-n"><span class="text-danger">*&nbsp;</span>机房名称</label>
+                          <div class="col-md-4" id="houseIds" (change)=" getProfessionTitleOptions($event.target.value)">
+                          </div>
+                          <label id="houseId_error" name="houseId_error" class="control-label p-n error"></label>
+                        </div>
+                         <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                          <label class="col-md-2 control-label p-n"><span class="text-danger">*&nbsp;</span>隶属单位</label>
+                          <div class="col-md-4" id="parentAreaCode">
+                            <!--<select  id="userBandWidthArea" class="form-control" name="areaCode" required>-->
+                            <!--</select>-->
+                          </div>
+                          <label name="tips" class="control-label p-n"><span class="text-center center-block" title="该信息所隶属的管理区域或部门，单选"><i class="fa fa-question-circle" aria-hidden="true"></i></span></label>
+                          <label name="areaCode_error" class="col-md-10 p-l-lg col-md-offset-2 text-danger"></label>
+                        </div>
+                      <!--  <div class="hr-line-dashed"></div>
+                       <div class="form-group">
+                        <label class="col-md-2 control-label"><span class="text-danger">*&nbsp;</span>隶属单位地市码</label>
+                        <div class="col-md-3">
+                          <select  id="areaCodeEdit" class="form-control" name="areaCode" required>
+                          </select>
+                        </div>
+                        <label id="areaCode_error" name="areaCode_error" class="control-label p-n error"></label>
+                      </div>-->
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                          <label class="col-md-2 control-label p-n"><span class="text-danger">*&nbsp;</span>网络带宽(Mbps)</label>
+                          <div class="col-md-4">
+                            <input type="isBanWidth" class="form-control" id="bandWidthId" name="bandWidth" required>
+                          </div>
+                          <label id="bandWidth_error" name="bandWidth_error" class="control-label p-n error"></label>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                          <label class="col-md-2 control-label  p-n"><span class="text-danger">*&nbsp;</span>资源分配日期</label>
+                          <div class="col-md-4">
+                            <input type="text" class="form-control" id="distributeTimeId_sa" name="distributeTime" required>
+                          </div>
+                          <label id="distributeTime_error" name="distributeTime_error" class="control-label p-n error"></label>
+                        </div>
+                        <div>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group m-t clear">
+              <div class="col-md-offset-2 col-md-3">
+                <button id="btnAdd" type="button" class="btn btn-primary save">提交</button>
+                <a id="btnCancel" class="m-l-sm" data-dismiss="modal">取消</a> </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--javascript加载 -->
+<div th:include="/common/footer :: myfooter"></div>
+<div th:include="/common/footer :: #userbandwidth"></div>
+<script th:src="@{{path}/static/js/common/isms-component-areaCode.js(path=${contextPath})}"></script>
+</body>
+</html>
